@@ -3,14 +3,11 @@ package com.kallam.middleware.model.broker;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.kallam.middleware.helper.MongoLocalDateTime;
 
-@Document(collection = "brokers")
+
 public class Bookings {
-	@Id
-	private String id;
-	public String bookingDate;
+	public MongoLocalDateTime bookingDate;
 	public String bookingNo;
 	public String bookingCode;
 	public String remarks;
@@ -20,27 +17,61 @@ public class Bookings {
 	public Double purity;
 	public String approxAmt;
 	public Double amountTaken;
-	public String dueDate;
-	public String repayDate;
+	public MongoLocalDateTime dueDate;
+	public MongoLocalDateTime repayDate;
 	public Double repayAmount;
 	public String closeType;
 	public String tranType;
 	public String loanType;
 	public Boolean closed;
 	public Boolean auctioned;
-	public String valueDate;
+	public MongoLocalDateTime valueDate;
 	public Double intrestRate;
-	public String closedDate;
+	public MongoLocalDateTime closedDate;
 	public List<Items> items = new ArrayList<Items>();
 	public List<BookingTrans> bookingTrans = new ArrayList<BookingTrans>();
 	public String createdBy;
 	public String updatedBy;
-	public String createdDt;
-	public String updatedDt;
-	public String getBookingDate() {
+	public MongoLocalDateTime createdDt;
+	public MongoLocalDateTime updatedDt;
+	public Bookings(MongoLocalDateTime bookingDate, String bookingNo, String bookingCode, String remarks, Integer expDays,
+			Double grossWeight, Double netWeight, Double purity, String approxAmt, Double amountTaken, MongoLocalDateTime dueDate,
+			MongoLocalDateTime repayDate, Double repayAmount, String closeType, String tranType, String loanType, Boolean closed,
+			Boolean auctioned, MongoLocalDateTime valueDate, Double intrestRate, MongoLocalDateTime closedDate, List<Items> items,
+			List<BookingTrans> bookingTrans, String createdBy, String updatedBy, MongoLocalDateTime createdDt, MongoLocalDateTime updatedDt) {
+		super();
+		this.bookingDate = bookingDate;
+		this.bookingNo = bookingNo;
+		this.bookingCode = bookingCode;
+		this.remarks = remarks;
+		this.expDays = expDays;
+		this.grossWeight = grossWeight;
+		this.netWeight = netWeight;
+		this.purity = purity;
+		this.approxAmt = approxAmt;
+		this.amountTaken = amountTaken;
+		this.dueDate = dueDate;
+		this.repayDate = repayDate;
+		this.repayAmount = repayAmount;
+		this.closeType = closeType;
+		this.tranType = tranType;
+		this.loanType = loanType;
+		this.closed = closed;
+		this.auctioned = auctioned;
+		this.valueDate = valueDate;
+		this.intrestRate = intrestRate;
+		this.closedDate = closedDate;
+		this.items = items;
+		this.bookingTrans = bookingTrans;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.createdDt = createdDt;
+		this.updatedDt = updatedDt;
+	}
+	public MongoLocalDateTime getBookingDate() {
 		return bookingDate;
 	}
-	public void setBookingDate(String bookingDate) {
+	public void setBookingDate(MongoLocalDateTime bookingDate) {
 		this.bookingDate = bookingDate;
 	}
 	public String getBookingNo() {
@@ -97,16 +128,16 @@ public class Bookings {
 	public void setAmountTaken(Double amountTaken) {
 		this.amountTaken = amountTaken;
 	}
-	public String getDueDate() {
+	public MongoLocalDateTime getDueDate() {
 		return dueDate;
 	}
-	public void setDueDate(String dueDate) {
+	public void setDueDate(MongoLocalDateTime dueDate) {
 		this.dueDate = dueDate;
 	}
-	public String getRepayDate() {
+	public MongoLocalDateTime getRepayDate() {
 		return repayDate;
 	}
-	public void setRepayDate(String repayDate) {
+	public void setRepayDate(MongoLocalDateTime repayDate) {
 		this.repayDate = repayDate;
 	}
 	public Double getRepayAmount() {
@@ -145,10 +176,10 @@ public class Bookings {
 	public void setAuctioned(Boolean auctioned) {
 		this.auctioned = auctioned;
 	}
-	public String getValueDate() {
+	public MongoLocalDateTime getValueDate() {
 		return valueDate;
 	}
-	public void setValueDate(String valueDate) {
+	public void setValueDate(MongoLocalDateTime valueDate) {
 		this.valueDate = valueDate;
 	}
 	public Double getIntrestRate() {
@@ -157,10 +188,10 @@ public class Bookings {
 	public void setIntrestRate(Double intrestRate) {
 		this.intrestRate = intrestRate;
 	}
-	public String getClosedDate() {
+	public MongoLocalDateTime getClosedDate() {
 		return closedDate;
 	}
-	public void setClosedDate(String closedDate) {
+	public void setClosedDate(MongoLocalDateTime closedDate) {
 		this.closedDate = closedDate;
 	}
 	public List<Items> getItems() {
@@ -187,16 +218,16 @@ public class Bookings {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	public String getCreatedDt() {
+	public MongoLocalDateTime getCreatedDt() {
 		return createdDt;
 	}
-	public void setCreatedDt(String createdDt) {
+	public void setCreatedDt(MongoLocalDateTime createdDt) {
 		this.createdDt = createdDt;
 	}
-	public String getUpdatedDt() {
+	public MongoLocalDateTime getUpdatedDt() {
 		return updatedDt;
 	}
-	public void setUpdatedDt(String updatedDt) {
+	public void setUpdatedDt(MongoLocalDateTime updatedDt) {
 		this.updatedDt = updatedDt;
 	}
-}
+	}

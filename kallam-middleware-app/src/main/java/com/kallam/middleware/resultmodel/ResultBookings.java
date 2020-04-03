@@ -1,17 +1,17 @@
-package com.kallam.middleware.model.broker;
+package com.kallam.middleware.resultmodel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kallam.middleware.helper.MongoLocalDateTime;
+import com.kallam.middleware.model.broker.Bookings;
 
-@Document(collection = "brokers")
-public class Brokers {
+public class ResultBookings {
 	
-	@Id
+	@Field("_id")
 	private String id;
 	private String companyCode;
 	private String brokerNo;
@@ -48,54 +48,9 @@ public class Brokers {
 	public MongoLocalDateTime updatedDt;
 	public String ownrent;
 	public String simbrand;
-	public List<Bookings> bookings = new ArrayList<Bookings>();
+	public Bookings bookings;
 	
-	public Brokers(String id, String companyCode, String brokerNo, String brokerName, String aadharNo, String addr1,
-			String addr2, String addr3, String town, String district, String area, String zipCode, String contactPerson,
-			String contactPersonId, String otherPhones, String relationPhones, String mobileNo, String email,
-			MongoLocalDateTime dob, MongoLocalDateTime dow, String discountCategory, Integer creditLimit, String remarks, String invType,
-			String adjustBills, String contactRelation, String occupation, Integer age, String caste, String gender,
-			String createdBy, String updatedBy, MongoLocalDateTime createdDt, MongoLocalDateTime updatedDt, String ownrent, String simbrand,
-			List<Bookings> bookings) {
-		super();
-		this.id = id;
-		this.companyCode = companyCode;
-		this.brokerNo = brokerNo;
-		this.brokerName = brokerName;
-		this.aadharNo = aadharNo;
-		this.addr1 = addr1;
-		this.addr2 = addr2;
-		this.addr3 = addr3;
-		this.town = town;
-		this.district = district;
-		this.area = area;
-		this.zipCode = zipCode;
-		this.contactPerson = contactPerson;
-		this.contactPersonId = contactPersonId;
-		this.otherPhones = otherPhones;
-		this.relationPhones = relationPhones;
-		this.mobileNo = mobileNo;
-		this.email = email;
-		this.dob = dob;
-		this.dow = dow;
-		this.discountCategory = discountCategory;
-		this.creditLimit = creditLimit;
-		this.remarks = remarks;
-		this.invType = invType;
-		this.adjustBills = adjustBills;
-		this.contactRelation = contactRelation;
-		this.occupation = occupation;
-		this.age = age;
-		this.caste = caste;
-		this.gender = gender;
-		this.createdBy = createdBy;
-		this.updatedBy = updatedBy;
-		this.createdDt = createdDt;
-		this.updatedDt = updatedDt;
-		this.ownrent = ownrent;
-		this.simbrand = simbrand;
-		this.bookings = bookings;
-	}
+	
 	public String getId() {
 		return id;
 	}
@@ -312,10 +267,10 @@ public class Brokers {
 	public void setSimbrand(String simbrand) {
 		this.simbrand = simbrand;
 	}
-	public List<Bookings> getBookings() {
+	public Bookings getBookings() {
 		return bookings;
 	}
-	public void setBookings(List<Bookings> bookings) {
+	public void setBookings(Bookings bookings) {
 		this.bookings = bookings;
 	}
 	@Override
