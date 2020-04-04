@@ -2,13 +2,11 @@ package com.kallam.middleware.service;
 
 import java.util.List;
 
-import org.bson.Document;
-
-import com.kallam.middleware.resultmodel.ResultBookings;
+import com.kallam.middleware.resultmodel.BrokerBookings;
 
 
 public interface BookingService {
 	
-	List<ResultBookings> getBookingService(String search);
+	List<BrokerBookings> getBookingService(String search);
 
 }

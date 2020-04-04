@@ -28,12 +28,9 @@ public class KallamMiddlewareAppApplication implements CommandLineRunner {
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	
-
 	public static void main(String[] args) {
 		SpringApplication.run(KallamMiddlewareAppApplication.class, args);
 	}
-	
-	
 	
 	@Override
     public void run(String... args) throws Exception {

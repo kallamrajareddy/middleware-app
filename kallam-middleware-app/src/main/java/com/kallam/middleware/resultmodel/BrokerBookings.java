@@ -1,15 +1,11 @@
 package com.kallam.middleware.resultmodel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.kallam.middleware.helper.MongoLocalDateTime;
 import com.kallam.middleware.model.broker.Bookings;
 
-public class ResultBookings {
+public class BrokerBookings {
 	
 	@Field("_id")
 	private String id;
@@ -17,38 +13,38 @@ public class ResultBookings {
 	private String brokerNo;
 	private String brokerName;
 	private String aadharNo;
-	public String addr1;
-	public String addr2;
-	public String addr3;
-	public String town;
-	public String district;
-	public String area;
-	public String zipCode;
-	public String contactPerson;
-	public String contactPersonId;
-	public String otherPhones;
-	public String relationPhones;
-	public String mobileNo;
-	public String email;
-	public MongoLocalDateTime dob;
-	public MongoLocalDateTime dow;
-	public String discountCategory;
-	public Integer creditLimit;
-	public String remarks;
-	public String invType;
-	public String adjustBills;
-	public String contactRelation;
-	public String occupation;
-	public Integer age;
-	public String caste;
-	public String gender;
-	public String createdBy;
-	public String updatedBy;
-	public MongoLocalDateTime createdDt;
-	public MongoLocalDateTime updatedDt;
-	public String ownrent;
-	public String simbrand;
-	public Bookings bookings;
+	private String addr1;
+	private String addr2;
+	private String addr3;
+	private String town;
+	private String district;
+	private String area;
+	private String zipCode;
+	private String contactPerson;
+	private String contactPersonId;
+	private String otherPhones;
+	private String relationPhones;
+	private String mobileNo;
+	private String email;
+	private MongoLocalDateTime dob;
+	private MongoLocalDateTime dow;
+	private String discountCategory;
+	private Integer creditLimit;
+	private String remarks;
+	private String invType;
+	private String adjustBills;
+	private String contactRelation;
+	private String occupation;
+	private Integer age;
+	private String caste;
+	private String gender;
+	private String createdBy;
+	private String updatedBy;
+	private MongoLocalDateTime createdDt;
+	private MongoLocalDateTime updatedDt;
+	private String ownrent;
+	private String simbrand;
+	private Bookings bookings;
 	
 	
 	public String getId() {

@@ -8,4 +8,8 @@ import com.kallam.middleware.model.broker.Brokers;
 public interface BrokerService {
 	List<Brokers> getBrokers(String search);
 	List<Brokers> brokereBetweenDob(Date from, Date to);
+	
+	Boolean checkBrokerExists(String name);
+	
+	Long getBrokersCount();
 }

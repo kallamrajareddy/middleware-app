@@ -36,5 +36,17 @@ public class BrokerServiceImpl implements BrokerService{
 		List<Brokers> brokers = mongoTemplate.find(query(where("dob").lte(from)), Brokers.class);
 		return brokers;
 	}
+	
+
+	@Override
+	public Boolean checkBrokerExists(String name) {
+		return  mongoTemplate.exists(query(where("brokerName").is(name)), Brokers.class);
+	}
+
+	@Override
+	public Long getBrokersCount() {
+		 
+		return mongoTemplate.count(query(where("")), Brokers.class);
+	}
 
 }
