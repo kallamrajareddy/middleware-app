@@ -29,11 +29,11 @@ public class AccountController {
 	@Autowired
 	private BrokerRepositry brokerRepositry;
 
-	@RequestMapping(value = "/get-broker-Lst/{searchValue}", method=RequestMethod.GET)
-    public List<Brokers> getBrokers(@PathVariable String searchValue) {
+	@RequestMapping(value = "/get-broker-Lst/{searchValue}/{compCode}", method=RequestMethod.GET)
+    public List<Brokers> getBrokers(@PathVariable String searchValue, @PathVariable String compCode) {
 		MongoLocalDateTime start = MongoLocalDateTime.of(1960, 8, 5, 0, 0, 0);
-		//return brokerService.getBrokers(searchValue);
-		return brokerRepositry.findByDobLessThan(new Date());
+		return brokerService.getBrokers(searchValue, compCode);
+		//return brokerRepositry.findByDobLessThan(new Date());
     }
 	public LocalDateTime convertToLocalDateTimeViaMilisecond(Date dateToConvert) {
 		return Instant.ofEpochMilli(dateToConvert.getTime())

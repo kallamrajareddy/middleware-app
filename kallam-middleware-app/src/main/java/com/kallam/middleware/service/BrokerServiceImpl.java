@@ -20,14 +20,15 @@ public class BrokerServiceImpl implements BrokerService{
 	
 
 	@Override
-	public List<Brokers> getBrokers(String search) {
+	public List<Brokers> getBrokers(String search, String compCode) {
 		List<Brokers> brokers = mongoTemplate.find(query(where("").orOperator(where("brokerName").regex(".*"+search+".*", "i")
 				,where("addr1").regex(".*"+search+".*", "i")
 				,where("addr2").regex(".*"+search+".*", "i")
 				,where("addr3").regex(".*"+search+".*", "i")
 				,where("aadharNo").regex(".*"+search+".*", "i")
-				,where("mobileNo").regex(".*"+search+".*", "i"))), Brokers.class);
-		return brokereBetweenDob(new Date(), new Date());
+				,where("mobileNo").regex(".*"+search+".*", "i")).andOperator(where("companyCode").is(compCode))), Brokers.class);
+		//return brokereBetweenDob(new Date(), new Date());
+		return brokers;
 	}
 
 
@@ -39,14 +40,14 @@ public class BrokerServiceImpl implements BrokerService{
 	
 
 	@Override
-	public Boolean checkBrokerExists(String name) {
-		return  mongoTemplate.exists(query(where("brokerName").is(name)), Brokers.class);
+	public Boolean checkBrokerExists(String name, String compCode) {
+		return  mongoTemplate.exists(query(where("brokerName").is(name).andOperator(where("companyCode").is(compCode))), Brokers.class);
 	}
 
 	@Override
-	public Long getBrokersCount() {
+	public Long getBrokersCount(String compCode) {
 		 
-		return mongoTemplate.count(query(where("")), Brokers.class);
+		return mongoTemplate.count(query(where("").andOperator(where("companyCode").is(compCode))), Brokers.class);
 	}
 
 }

@@ -23,14 +23,14 @@ public class CommonController {
 	@Autowired
 	private MasterService masterService;
 	
-	@RequestMapping(value = "/existing-broker-check/{name}", method=RequestMethod.GET)
-    public Boolean checkBrokerExists(@PathVariable String name) {
-		return brokerService.checkBrokerExists(name);
+	@RequestMapping(value = "/existing-broker-check/{name}/{compCode}", method=RequestMethod.GET)
+    public Boolean checkBrokerExists(@PathVariable String name, @PathVariable String compCode) {
+		return brokerService.checkBrokerExists(name, compCode);
 	}
 	
-	@RequestMapping(value = "/broker-count", method=RequestMethod.GET)
-    public Long getBrokersCount() {
-		return brokerService.getBrokersCount();
+	@RequestMapping(value = "/broker-count/{compCode}", method=RequestMethod.GET)
+    public Long getBrokersCount(@PathVariable String compCode) {
+		return brokerService.getBrokersCount(compCode);
 	}
 	
 	@RequestMapping(value = "/get-masterdata", method=RequestMethod.GET)
