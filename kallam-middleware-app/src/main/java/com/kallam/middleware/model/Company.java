@@ -20,5 +20,8 @@ public class Company {
 		this.value = value;
 		this.text = text;
 	}
+	public Company() {
+		super();
+	}
 
 }

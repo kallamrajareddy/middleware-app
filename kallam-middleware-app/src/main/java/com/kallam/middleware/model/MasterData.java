@@ -80,5 +80,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 			this.typeOfMeasurment = typeOfMeasurment;
 			this.typeOfIntrest = typeOfIntrest;
 		}
+
+		public MasterData() {
+			super();
+		}
 		
 }

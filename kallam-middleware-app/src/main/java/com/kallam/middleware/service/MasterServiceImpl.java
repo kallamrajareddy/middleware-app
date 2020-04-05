@@ -20,4 +20,10 @@ public class MasterServiceImpl implements MasterService{
 		return mongoTemplate.findOne(query(where("")), MasterData.class);
 	}
 
+	@Override
+	public MasterData saveMasterData(MasterData master) {
+		MasterData masterData = mongoTemplate.save(master);
+		return masterData;
+	}
+
 }
