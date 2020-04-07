@@ -1,18 +1,13 @@
-package com.kallam.middleware.model.broker;
+package com.kallam.middleware.request.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.kallam.middleware.helper.MongoLocalDateTime;
+import com.kallam.middleware.model.broker.Bookings;
 
-@Document(collection = "brokers")
-public class Brokers {
-	
-	@Id
-	private String id;
+public class BrokerRequest {
 	private String companyCode;
 	private String brokerNo;
 	private String brokerName;
@@ -28,8 +23,8 @@ public class Brokers {
 	private String otherPhones1;
 	private String otherPhones2;
 	private String email;
-	private MongoLocalDateTime dob;
-	private MongoLocalDateTime dow;
+	private Date dob;
+	private Date dow;
 	private String occupation;
 	private Integer age;
 	private String gender;
@@ -46,22 +41,21 @@ public class Brokers {
 	private String contact2Relation;
 	private String createdBy;
 	private String updatedBy;
-	private MongoLocalDateTime createdDt;
-	private MongoLocalDateTime updatedDt;
+	private Date createdDt;
+	private Date updatedDt;
 	private List<Bookings> bookings = new ArrayList<Bookings>();
-	public Brokers() {
+	public BrokerRequest() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	public Brokers(String id, String companyCode, String brokerNo, String brokerName, String aadharNo, String addr1,
+	public BrokerRequest(String companyCode, String brokerNo, String brokerName, String aadharNo, String addr1,
 			String addr2, String addr3, String town, String district, String area, String zipCode, String mobileNo,
-			String otherPhones1, String otherPhones2, String email, MongoLocalDateTime dob, MongoLocalDateTime dow,
-			String occupation, Integer age, String gender, String remarks, boolean ownrent, boolean defaulter,
-			String contactPerson1, String contact1Mobile, String contact1PersonId, String contact1Relation,
-			String contactPerson2, String contact2Mobile, String contact2PersonId, String contact2Relation,
-			String createdBy, String updatedBy, MongoLocalDateTime createdDt, MongoLocalDateTime updatedDt,
-			List<Bookings> bookings) {
+			String otherPhones1, String otherPhones2, String email, Date dob, Date dow, String occupation, Integer age,
+			String gender, String remarks, boolean ownrent, boolean defaulter, String contactPerson1,
+			String contact1Mobile, String contact1PersonId, String contact1Relation, String contactPerson2,
+			String contact2Mobile, String contact2PersonId, String contact2Relation, String createdBy, String updatedBy,
+			Date createdDt, Date updatedDt, List<Bookings> bookings) {
 		super();
-		this.id = id;
 		this.companyCode = companyCode;
 		this.brokerNo = brokerNo;
 		this.brokerName = brokerName;
@@ -98,12 +92,6 @@ public class Brokers {
 		this.createdDt = createdDt;
 		this.updatedDt = updatedDt;
 		this.bookings = bookings;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	public String getCompanyCode() {
 		return companyCode;
@@ -195,16 +183,16 @@ public class Brokers {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public MongoLocalDateTime getDob() {
+	public Date getDob() {
 		return dob;
 	}
-	public void setDob(MongoLocalDateTime dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
-	public MongoLocalDateTime getDow() {
+	public Date getDow() {
 		return dow;
 	}
-	public void setDow(MongoLocalDateTime dow) {
+	public void setDow(Date dow) {
 		this.dow = dow;
 	}
 	public String getOccupation() {
@@ -303,16 +291,16 @@ public class Brokers {
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
 	}
-	public MongoLocalDateTime getCreatedDt() {
+	public Date getCreatedDt() {
 		return createdDt;
 	}
-	public void setCreatedDt(MongoLocalDateTime createdDt) {
+	public void setCreatedDt(Date createdDt) {
 		this.createdDt = createdDt;
 	}
-	public MongoLocalDateTime getUpdatedDt() {
+	public Date getUpdatedDt() {
 		return updatedDt;
 	}
-	public void setUpdatedDt(MongoLocalDateTime updatedDt) {
+	public void setUpdatedDt(Date updatedDt) {
 		this.updatedDt = updatedDt;
 	}
 	public List<Bookings> getBookings() {
@@ -320,4 +308,6 @@ public class Brokers {
 	}
 	public void setBookings(List<Bookings> bookings) {
 		this.bookings = bookings;
-	}}
+	}
+	
+}

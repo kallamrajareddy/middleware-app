@@ -1,5 +1,7 @@
 package com.kallam.middleware.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kallam.middleware.model.MasterData;
+import com.kallam.middleware.model.PostalData;
 import com.kallam.middleware.service.BrokerService;
 import com.kallam.middleware.service.MasterService;
 
@@ -28,8 +31,8 @@ public class CommonController {
 		return brokerService.checkBrokerExists(name, compCode);
 	}
 	
-	@RequestMapping(value = "/broker-count/{compCode}", method=RequestMethod.GET)
-    public Long getBrokersCount(@PathVariable String compCode) {
+	@RequestMapping(value = "/broker-account-code/{compCode}", method=RequestMethod.GET)
+    public String getBrokersCount(@PathVariable String compCode) {
 		return brokerService.getBrokersCount(compCode);
 	}
 	
@@ -37,10 +40,9 @@ public class CommonController {
     public MasterData getMasterData() {
 		return masterService.getMasterData();
 	}
-	
-	@RequestMapping(value = "/update-masterdata", method=RequestMethod.POST)
-    public MasterData updateData(@RequestBody MasterData master) {
-		 return  masterService.saveMasterData(master);
+	@RequestMapping(value = "/get-postal/{code}", method=RequestMethod.GET)
+	public List<PostalData> getPostalData(@PathVariable String code) {
+		return masterService.getPostalCode(code);
 	}
 
 }

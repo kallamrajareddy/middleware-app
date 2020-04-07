@@ -2,6 +2,7 @@ package com.kallam.middleware.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,6 +22,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 		private List<String> typeOfMeasurment = new ArrayList<>();
 		
 		private List<String> typeOfIntrest = new ArrayList<>();
+		
+		private List<String> typeOfOccupation = new ArrayList<>();
+		
+		private List<Map<String, List<String>>> typeOfLoan = new ArrayList<>();
 
 		public String getId() {
 			return id;
@@ -70,8 +75,24 @@ import org.springframework.data.mongodb.core.mapping.Document;
 			this.typeOfIntrest = typeOfIntrest;
 		}
 
+		public List<String> getTypeOfOccupation() {
+			return typeOfOccupation;
+		}
+
+		public void setTypeOfOccupation(List<String> typeOfOccupation) {
+			this.typeOfOccupation = typeOfOccupation;
+		}
+
+		public List<Map<String, List<String>>> getTypeOfLoan() {
+			return typeOfLoan;
+		}
+
+		public void setTypeOfLoan(List<Map<String, List<String>>> typeOfLoan) {
+			this.typeOfLoan = typeOfLoan;
+		}
+
 		public MasterData(String id, List<Company> company, List<String> typeOfItems, List<String> typeOfRelation,
-				List<String> typeOfMeasurment, List<String> typeOfIntrest) {
+				List<String> typeOfMeasurment, List<String> typeOfIntrest, List<String> typeOfOccupation, List<Map<String, List<String>>> typeOfLoan) {
 			super();
 			this.id = id;
 			this.company = company;
@@ -79,6 +100,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 			this.typeOfRelation = typeOfRelation;
 			this.typeOfMeasurment = typeOfMeasurment;
 			this.typeOfIntrest = typeOfIntrest;
+			this.typeOfOccupation = typeOfOccupation;
+			this.typeOfLoan = typeOfLoan;
 		}
 
 		public MasterData() {

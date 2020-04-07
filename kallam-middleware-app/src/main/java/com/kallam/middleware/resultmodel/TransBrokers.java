@@ -19,33 +19,82 @@ public class TransBrokers {
 	private String district;
 	private String area;
 	private String zipCode;
-	private String contactPerson;
-	private String contactPersonId;
-	private String otherPhones;
-	private String relationPhones;
 	private String mobileNo;
+	private String otherPhones1;
+	private String otherPhones2;
 	private String email;
 	private MongoLocalDateTime dob;
 	private MongoLocalDateTime dow;
-	private String discountCategory;
-	private Integer creditLimit;
-	private String remarks;
-	private String invType;
-	private String adjustBills;
-	private String contactRelation;
 	private String occupation;
 	private Integer age;
-	private String caste;
 	private String gender;
+	private String remarks;
+	private boolean ownrent;
+	private boolean defaulter;
+	private String contactPerson1;
+	private String contact1Mobile;
+	private String contact1PersonId;
+	private String contact1Relation;
+	private String contactPerson2;
+	private String contact2Mobile;
+	private String contact2PersonId;
+	private String contact2Relation;
 	private String createdBy;
 	private String updatedBy;
 	private MongoLocalDateTime createdDt;
 	private MongoLocalDateTime updatedDt;
-	private String ownrent;
-	private String simbrand;
 	private TransBookings bookings;
-	
-	
+	public TransBrokers() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public TransBrokers(String id, String companyCode, String brokerNo, String brokerName, String aadharNo,
+			String addr1, String addr2, String addr3, String town, String district, String area, String zipCode,
+			String mobileNo, String otherPhones1, String otherPhones2, String email, MongoLocalDateTime dob,
+			MongoLocalDateTime dow, String occupation, Integer age, String gender, String remarks, boolean ownrent,
+			boolean defaulter, String contactPerson1, String contact1Mobile, String contact1PersonId,
+			String contact1Relation, String contactPerson2, String contact2Mobile, String contact2PersonId,
+			String contact2Relation, String createdBy, String updatedBy, MongoLocalDateTime createdDt,
+			MongoLocalDateTime updatedDt, TransBookings bookings) {
+		super();
+		this.id = id;
+		this.companyCode = companyCode;
+		this.brokerNo = brokerNo;
+		this.brokerName = brokerName;
+		this.aadharNo = aadharNo;
+		this.addr1 = addr1;
+		this.addr2 = addr2;
+		this.addr3 = addr3;
+		this.town = town;
+		this.district = district;
+		this.area = area;
+		this.zipCode = zipCode;
+		this.mobileNo = mobileNo;
+		this.otherPhones1 = otherPhones1;
+		this.otherPhones2 = otherPhones2;
+		this.email = email;
+		this.dob = dob;
+		this.dow = dow;
+		this.occupation = occupation;
+		this.age = age;
+		this.gender = gender;
+		this.remarks = remarks;
+		this.ownrent = ownrent;
+		this.defaulter = defaulter;
+		this.contactPerson1 = contactPerson1;
+		this.contact1Mobile = contact1Mobile;
+		this.contact1PersonId = contact1PersonId;
+		this.contact1Relation = contact1Relation;
+		this.contactPerson2 = contactPerson2;
+		this.contact2Mobile = contact2Mobile;
+		this.contact2PersonId = contact2PersonId;
+		this.contact2Relation = contact2Relation;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.createdDt = createdDt;
+		this.updatedDt = updatedDt;
+		this.bookings = bookings;
+	}
 	public String getId() {
 		return id;
 	}
@@ -69,6 +118,12 @@ public class TransBrokers {
 	}
 	public void setBrokerName(String brokerName) {
 		this.brokerName = brokerName;
+	}
+	public String getAadharNo() {
+		return aadharNo;
+	}
+	public void setAadharNo(String aadharNo) {
+		this.aadharNo = aadharNo;
 	}
 	public String getAddr1() {
 		return addr1;
@@ -112,29 +167,23 @@ public class TransBrokers {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
-	public String getContactPerson() {
-		return contactPerson;
-	}
-	public void setContactPerson(String contactPerson) {
-		this.contactPerson = contactPerson;
-	}
-	public String getOtherPhones() {
-		return otherPhones;
-	}
-	public void setOtherPhones(String otherPhones) {
-		this.otherPhones = otherPhones;
-	}
-	public String getRelationPhones() {
-		return relationPhones;
-	}
-	public void setRelationPhones(String relationPhones) {
-		this.relationPhones = relationPhones;
-	}
 	public String getMobileNo() {
 		return mobileNo;
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	public String getOtherPhones1() {
+		return otherPhones1;
+	}
+	public void setOtherPhones1(String otherPhones1) {
+		this.otherPhones1 = otherPhones1;
+	}
+	public String getOtherPhones2() {
+		return otherPhones2;
+	}
+	public void setOtherPhones2(String otherPhones2) {
+		this.otherPhones2 = otherPhones2;
 	}
 	public String getEmail() {
 		return email;
@@ -154,42 +203,6 @@ public class TransBrokers {
 	public void setDow(MongoLocalDateTime dow) {
 		this.dow = dow;
 	}
-	public String getDiscountCategory() {
-		return discountCategory;
-	}
-	public void setDiscountCategory(String discountCategory) {
-		this.discountCategory = discountCategory;
-	}
-	public Integer getCreditLimit() {
-		return creditLimit;
-	}
-	public void setCreditLimit(Integer creditLimit) {
-		this.creditLimit = creditLimit;
-	}
-	public String getRemarks() {
-		return remarks;
-	}
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
-	}
-	public String getInvType() {
-		return invType;
-	}
-	public void setInvType(String invType) {
-		this.invType = invType;
-	}
-	public String getAdjustBills() {
-		return adjustBills;
-	}
-	public void setAdjustBills(String adjustBills) {
-		this.adjustBills = adjustBills;
-	}
-	public String getContactRelation() {
-		return contactRelation;
-	}
-	public void setContactRelation(String contactRelation) {
-		this.contactRelation = contactRelation;
-	}
 	public String getOccupation() {
 		return occupation;
 	}
@@ -202,17 +215,77 @@ public class TransBrokers {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
-	public String getCaste() {
-		return caste;
-	}
-	public void setCaste(String caste) {
-		this.caste = caste;
-	}
 	public String getGender() {
 		return gender;
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public boolean isOwnrent() {
+		return ownrent;
+	}
+	public void setOwnrent(boolean ownrent) {
+		this.ownrent = ownrent;
+	}
+	public boolean isDefaulter() {
+		return defaulter;
+	}
+	public void setDefaulter(boolean defaulter) {
+		this.defaulter = defaulter;
+	}
+	public String getContactPerson1() {
+		return contactPerson1;
+	}
+	public void setContactPerson1(String contactPerson1) {
+		this.contactPerson1 = contactPerson1;
+	}
+	public String getContact1Mobile() {
+		return contact1Mobile;
+	}
+	public void setContact1Mobile(String contact1Mobile) {
+		this.contact1Mobile = contact1Mobile;
+	}
+	public String getContact1PersonId() {
+		return contact1PersonId;
+	}
+	public void setContact1PersonId(String contact1PersonId) {
+		this.contact1PersonId = contact1PersonId;
+	}
+	public String getContact1Relation() {
+		return contact1Relation;
+	}
+	public void setContact1Relation(String contact1Relation) {
+		this.contact1Relation = contact1Relation;
+	}
+	public String getContactPerson2() {
+		return contactPerson2;
+	}
+	public void setContactPerson2(String contactPerson2) {
+		this.contactPerson2 = contactPerson2;
+	}
+	public String getContact2Mobile() {
+		return contact2Mobile;
+	}
+	public void setContact2Mobile(String contact2Mobile) {
+		this.contact2Mobile = contact2Mobile;
+	}
+	public String getContact2PersonId() {
+		return contact2PersonId;
+	}
+	public void setContact2PersonId(String contact2PersonId) {
+		this.contact2PersonId = contact2PersonId;
+	}
+	public String getContact2Relation() {
+		return contact2Relation;
+	}
+	public void setContact2Relation(String contact2Relation) {
+		this.contact2Relation = contact2Relation;
 	}
 	public String getCreatedBy() {
 		return createdBy;
@@ -238,30 +311,6 @@ public class TransBrokers {
 	public void setUpdatedDt(MongoLocalDateTime updatedDt) {
 		this.updatedDt = updatedDt;
 	}
-	public String getOwnrent() {
-		return ownrent;
-	}
-	public void setOwnrent(String ownrent) {
-		this.ownrent = ownrent;
-	}
-	public String getAadharNo() {
-		return aadharNo;
-	}
-	public void setAadharNo(String aadharNo) {
-		this.aadharNo = aadharNo;
-	}
-	public String getContactPersonId() {
-		return contactPersonId;
-	}
-	public void setContactPersonId(String contactPersonId) {
-		this.contactPersonId = contactPersonId;
-	}
-	public String getSimbrand() {
-		return simbrand;
-	}
-	public void setSimbrand(String simbrand) {
-		this.simbrand = simbrand;
-	}
 	public TransBookings getBookings() {
 		return bookings;
 	}
@@ -270,17 +319,16 @@ public class TransBrokers {
 	}
 	@Override
 	public String toString() {
-		return "Brokers [id=" + id + ", companyCode=" + companyCode + ", brokerNo=" + brokerNo + ", brokerName="
+		return "TransBrokers [id=" + id + ", companyCode=" + companyCode + ", brokerNo=" + brokerNo + ", brokerName="
 				+ brokerName + ", aadharNo=" + aadharNo + ", addr1=" + addr1 + ", addr2=" + addr2 + ", addr3=" + addr3
 				+ ", town=" + town + ", district=" + district + ", area=" + area + ", zipCode=" + zipCode
-				+ ", contactPerson=" + contactPerson + ", contactPersonId=" + contactPersonId + ", otherPhones="
-				+ otherPhones + ", relationPhones=" + relationPhones + ", mobileNo=" + mobileNo + ", email=" + email
-				+ ", dob=" + dob + ", dow=" + dow + ", discountCategory=" + discountCategory + ", creditLimit="
-				+ creditLimit + ", remarks=" + remarks + ", invType=" + invType + ", adjustBills=" + adjustBills
-				+ ", contactRelation=" + contactRelation + ", occupation=" + occupation + ", age=" + age + ", caste="
-				+ caste + ", gender=" + gender + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy
-				+ ", createdDt=" + createdDt + ", updatedDt=" + updatedDt + ", ownrent=" + ownrent + ", simbrand="
-				+ simbrand + ", bookings=" + bookings + "]";
+				+ ", mobileNo=" + mobileNo + ", otherPhones1=" + otherPhones1 + ", otherPhones2=" + otherPhones2
+				+ ", email=" + email + ", dob=" + dob + ", dow=" + dow + ", occupation=" + occupation + ", age=" + age
+				+ ", gender=" + gender + ", remarks=" + remarks + ", ownrent=" + ownrent + ", defaulter=" + defaulter
+				+ ", contactPerson1=" + contactPerson1 + ", contact1Mobile=" + contact1Mobile + ", contact1PersonId="
+				+ contact1PersonId + ", contact1Relation=" + contact1Relation + ", contactPerson2=" + contactPerson2
+				+ ", contact2Mobile=" + contact2Mobile + ", contact2PersonId=" + contact2PersonId
+				+ ", contact2Relation=" + contact2Relation + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy
+				+ ", createdDt=" + createdDt + ", updatedDt=" + updatedDt + ", bookings=" + bookings + "]";
 	}
-
-}
+	}

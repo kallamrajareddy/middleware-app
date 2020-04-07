@@ -3,11 +3,14 @@ package com.kallam.middleware.service;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import com.kallam.middleware.model.MasterData;
+import com.kallam.middleware.model.PostalData;
 
 @Service
 public class MasterServiceImpl implements MasterService{
@@ -24,6 +27,11 @@ public class MasterServiceImpl implements MasterService{
 	public MasterData saveMasterData(MasterData master) {
 		MasterData masterData = mongoTemplate.save(master);
 		return masterData;
+	}
+
+	@Override
+	public List<PostalData> getPostalCode(String code) {
+		return mongoTemplate.find(query(where("pincode").is(Integer.valueOf(code))), PostalData.class);
 	}
 
 }
