@@ -20,4 +20,8 @@ public interface BrokerService {
 	Brokers createBroker(BrokerRequest brokerRequest, MultipartFile custImage);
 
 	Brokers getBroker(String brokerNo, String compCode);
+
+	Brokers defaultuerStatusUpdate(String brokerNo, String compCode, Boolean status, String updatedBy);
+
+	Brokers updateBroker(BrokerRequest brokerRequest, MultipartFile custImage);
 }

@@ -121,6 +121,46 @@ public class BrokerServiceImpl implements BrokerService{
 		broker.setZipCode(brokerRequest.getZipCode());
 		copyImage(custImage, brokerRequest.getBrokerNo());
 		return mongoTemplate.save(broker);
+	}
+	
+	@Override
+	public Brokers updateBroker(BrokerRequest brokerRequest, MultipartFile custImage) {
+		Brokers broker =mongoTemplate.findOne(query(where("brokerNo").is(brokerRequest.getBrokerNo()).andOperator(where("companyCode").is(brokerRequest.getCompanyCode()))), Brokers.class);
+		broker.setAadharNo(brokerRequest.getAadharNo());
+		broker.setAddr1(brokerRequest.getAddr1());
+		broker.setAddr2(brokerRequest.getAddr2());
+		broker.setAddr3(brokerRequest.getAddr3());
+		broker.setAge(brokerRequest.getAge());
+		broker.setArea(brokerRequest.getArea());
+		broker.setBrokerName(brokerRequest.getBrokerName());
+		broker.setContact1Mobile(brokerRequest.getContact1Mobile());
+		broker.setContact1PersonId(brokerRequest.getContact1PersonId());
+		broker.setContact2Relation(brokerRequest.getContact2Relation());
+		broker.setContact2Mobile(brokerRequest.getContact2Mobile());
+		broker.setContact2PersonId(brokerRequest.getContact2PersonId());
+		broker.setContact2Relation(brokerRequest.getContact2Relation());
+		broker.setContactPerson1(brokerRequest.getContactPerson1());
+		broker.setContactPerson2(brokerRequest.getContactPerson2());
+		broker.setDistrict(brokerRequest.getDistrict());
+		if(brokerRequest.getDob() != null) {
+			broker.setDob(MongoDateUtil.toLocal(brokerRequest.getDob()));
+		}
+		broker.setEmail(brokerRequest.getEmail());
+		broker.setGender(brokerRequest.getGender());
+		broker.setMobileNo(brokerRequest.getMobileNo());
+		broker.setOccupation(brokerRequest.getOccupation());
+		broker.setOtherPhones1(brokerRequest.getOtherPhones1());
+		broker.setOtherPhones2(brokerRequest.getOtherPhones2());
+		broker.setOwnrent(brokerRequest.isOwnrent());
+		broker.setRemarks(brokerRequest.getRemarks());
+		broker.setTown(brokerRequest.getTown());
+		broker.setUpdatedBy(brokerRequest.getUpdatedBy());
+		broker.setUpdatedDt(MongoDateUtil.toLocal(new Date()));
+		broker.setZipCode(brokerRequest.getZipCode());
+		if(custImage != null) {
+			copyImage(custImage, brokerRequest.getBrokerNo());
+		}
+		return mongoTemplate.save(broker);
 		//return null;
 	}
 	private void copyImage(MultipartFile custImage, String brokerNo) {
@@ -146,6 +186,17 @@ public class BrokerServiceImpl implements BrokerService{
 	public Brokers getBroker(String brokerNo, String compCode) {
 		
 		return mongoTemplate.findOne(query(where("brokerNo").is(brokerNo).andOperator(where("companyCode").is(compCode))), Brokers.class);
+	}
+
+
+	@Override
+	public Brokers defaultuerStatusUpdate(String brokerNo, String compCode, Boolean status, String updatedBy) {
+		
+		Brokers broker = mongoTemplate.findOne(query(where("brokerNo").is(brokerNo).andOperator(where("companyCode").is(compCode))), Brokers.class);
+		broker.setDefaulter(status);
+		broker.setUpdatedBy(updatedBy);
+		broker.setUpdatedDt(MongoDateUtil.toLocal(new Date()));
+		return mongoTemplate.save(broker);
 	}
 
 }

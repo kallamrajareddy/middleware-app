@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class AccountController {
 	@RequestMapping(value = "/get-broker-Lst/{searchValue}/{compCode}", method=RequestMethod.GET)
     public List<Brokers> getBrokers(@PathVariable String searchValue, @PathVariable String compCode) {
 		MongoLocalDateTime start = MongoLocalDateTime.of(1960, 8, 5, 0, 0, 0);
+		searchValue = searchValue.replaceAll("[+]", Matcher.quoteReplacement("\\/"));;
 		return brokerService.getBrokers(searchValue, compCode);
 		//return brokerRepositry.findByDobLessThan(new Date());
     }
@@ -46,7 +48,7 @@ public class AccountController {
     }
 	
 	@RequestMapping(value = "/save-broker", method=RequestMethod.POST)
-    public Brokers saveBrokers(@RequestParam("form") String form, @RequestParam("file") MultipartFile custImage) {
+    public Brokers saveBrokers(@RequestParam("form") String form, @RequestParam(value = "file", required=false) MultipartFile custImage) {
 		try {
 			BrokerRequest brokerRequest = new ObjectMapper().readValue(form, BrokerRequest.class);
 			 return brokerService.createBroker(brokerRequest, custImage);
@@ -56,6 +58,30 @@ public class AccountController {
 		
 		return null;
     }
+	
+	@RequestMapping(value = "/update-broker", method=RequestMethod.POST)
+	public Brokers updateBrokers(@RequestParam("form") String form, @RequestParam(value = "file", required=false) MultipartFile custImage) {
+		try {
+			BrokerRequest brokerRequest = new ObjectMapper().readValue(form, BrokerRequest.class);
+			return brokerService.updateBroker(brokerRequest, custImage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	@RequestMapping(value = "/update-broker-status", method=RequestMethod.POST)
+	public Brokers defaultuerStatusUpdate(@RequestParam("brokerNo") String brokerNo, @RequestParam("compCode") String compCode,
+			@RequestParam("status") Boolean status, @RequestParam("updatedBy") String updatedBy) {
+		try {
+			return brokerService.defaultuerStatusUpdate(brokerNo, compCode, status, updatedBy);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
 	public LocalDateTime convertToLocalDateTimeViaMilisecond(Date dateToConvert) {
 		return Instant.ofEpochMilli(dateToConvert.getTime())
