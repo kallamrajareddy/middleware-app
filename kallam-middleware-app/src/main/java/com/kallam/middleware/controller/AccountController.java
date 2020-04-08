@@ -1,20 +1,15 @@
 package com.kallam.middleware.controller;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +24,7 @@ import com.kallam.middleware.service.BrokerService;
 
 @RestController
 @RequestMapping("/api/secured/")
-@PreAuthorize("hasAuthority('ROLE_SUPER') or hasAuthority('ROLE_ADMIN')")
+@PreAuthorize("hasAuthority('ROLE_SUPER') or hasAuthority('ROLE_ADMIN')  or hasAuthority('ROLE_USER')")
 public class AccountController {
 	
 	@Autowired
@@ -43,6 +38,11 @@ public class AccountController {
 		MongoLocalDateTime start = MongoLocalDateTime.of(1960, 8, 5, 0, 0, 0);
 		return brokerService.getBrokers(searchValue, compCode);
 		//return brokerRepositry.findByDobLessThan(new Date());
+    }
+	
+	@RequestMapping(value = "/get-broker/{brokerNo}/{compCode}", method=RequestMethod.GET)
+    public Brokers getBroker(@PathVariable String brokerNo, @PathVariable String compCode) {
+		return brokerService.getBroker(brokerNo, compCode);
     }
 	
 	@RequestMapping(value = "/save-broker", method=RequestMethod.POST)

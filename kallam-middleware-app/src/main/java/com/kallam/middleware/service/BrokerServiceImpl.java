@@ -141,4 +141,11 @@ public class BrokerServiceImpl implements BrokerService{
 		
 	}
 
+
+	@Override
+	public Brokers getBroker(String brokerNo, String compCode) {
+		
+		return mongoTemplate.findOne(query(where("brokerNo").is(brokerNo).andOperator(where("companyCode").is(compCode))), Brokers.class);
+	}
+
 }

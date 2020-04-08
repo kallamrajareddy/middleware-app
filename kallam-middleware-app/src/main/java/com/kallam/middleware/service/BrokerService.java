@@ -18,4 +18,6 @@ public interface BrokerService {
 	String getBrokersCount(String compCode);
 	
 	Brokers createBroker(BrokerRequest brokerRequest, MultipartFile custImage);
+
+	Brokers getBroker(String brokerNo, String compCode);
 }
