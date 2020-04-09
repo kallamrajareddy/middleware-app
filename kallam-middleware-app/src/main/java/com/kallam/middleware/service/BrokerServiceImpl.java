@@ -5,28 +5,44 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
+import org.springframework.data.mongodb.core.aggregation.AggregationOperationContext;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.sort;
+import static org.springframework.data.mongodb.core.aggregation.Aggregation.unwind;
+import static org.springframework.data.mongodb.core.aggregation.ConditionalOperators.when;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.domain.Sort.sort;
 import static org.springframework.data.domain.Sort.by;
 
 import com.kallam.middleware.MongoDateUtil;
+import com.kallam.middleware.helper.MongoLocalDateTime;
 import com.kallam.middleware.model.broker.Brokers;
 import com.kallam.middleware.request.model.BrokerRequest;
+import com.mongodb.DBObject;
 
 @Service
 public class BrokerServiceImpl implements BrokerService{
@@ -50,11 +66,10 @@ public class BrokerServiceImpl implements BrokerService{
 				,where("addr2").regex(".*"+search+".*", "i")
 				,where("addr3").regex(".*"+search+".*", "i")
 				,where("brokerNo").regex(".*"+search+".*", "i")
-				,where("mobileNo").regex(".*"+search+".*", "i")).andOperator(where("companyCode").is(compCode))).with(Sort.by(Sort.Direction.DESC, "booking.closed")), Brokers.class);
+				,where("mobileNo").regex(".*"+search+".*", "i")).andOperator(where("companyCode").is(compCode))).with(Sort.by(Sort.Direction.DESC, "bookings.dueDate")), Brokers.class);
 		//return brokereBetweenDob(new Date(), new Date());
 		return brokers;
 	}
-
 
 	@Override
 	public List<Brokers> brokereBetweenDob(Date from, Date to) {
@@ -135,7 +150,7 @@ public class BrokerServiceImpl implements BrokerService{
 		broker.setBrokerName(brokerRequest.getBrokerName());
 		broker.setContact1Mobile(brokerRequest.getContact1Mobile());
 		broker.setContact1PersonId(brokerRequest.getContact1PersonId());
-		broker.setContact2Relation(brokerRequest.getContact2Relation());
+		broker.setContact1Relation(brokerRequest.getContact1Relation());
 		broker.setContact2Mobile(brokerRequest.getContact2Mobile());
 		broker.setContact2PersonId(brokerRequest.getContact2PersonId());
 		broker.setContact2Relation(brokerRequest.getContact2Relation());
@@ -177,6 +192,8 @@ public class BrokerServiceImpl implements BrokerService{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			
 		}
 		
 	}

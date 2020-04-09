@@ -43,7 +43,7 @@ public class BrokerRequest {
 	private String updatedBy;
 	private Date createdDt;
 	private Date updatedDt;
-	private List<Bookings> bookings = new ArrayList<Bookings>();
+	private List<BookingRequest> bookings = new ArrayList<BookingRequest>();
 
 	public BrokerRequest() {
 		super();
@@ -56,7 +56,7 @@ public class BrokerRequest {
 			String occupation, Integer age, String gender, String remarks, boolean ownrent, boolean defaulter,
 			String contactPerson1, String contact1Mobile, String contact1PersonId, String contact1Relation,
 			String contactPerson2, String contact2Mobile, String contact2PersonId, String contact2Relation,
-			String createdBy, String updatedBy, Date createdDt, Date updatedDt, List<Bookings> bookings) {
+			String createdBy, String updatedBy, Date createdDt, Date updatedDt, List<BookingRequest> bookings) {
 		super();
 		this.id = id;
 		this.companyCode = companyCode;
@@ -385,11 +385,11 @@ public class BrokerRequest {
 		this.updatedDt = updatedDt;
 	}
 
-	public List<Bookings> getBookings() {
+	public List<BookingRequest> getBookings() {
 		return bookings;
 	}
 
-	public void setBookings(List<Bookings> bookings) {
+	public void setBookings(List<BookingRequest> bookings) {
 		this.bookings = bookings;
 	}
 }

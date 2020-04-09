@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kallam.middleware.model.broker.Brokers;
 import com.kallam.middleware.request.model.BrokerRequest;
+import com.mongodb.DBObject;
 
 public interface BrokerService {
 	List<Brokers> getBrokers(String search, String compCode);
