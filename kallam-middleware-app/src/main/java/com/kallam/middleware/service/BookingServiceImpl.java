@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bson.BsonUndefined;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -106,17 +107,23 @@ public class BookingServiceImpl implements BookingService {
 						.is(compCode), where("bookings").exists(true))),
 				sort(Sort.Direction.DESC, "bookings.bookingDate"), unwind("bookings"), 
 				project("brokerNo", "brokerName","contactPerson2",
-						"contactPerson1", "mobileNo", "occupation", "age", "addr1",
+						"contactPerson1", "mobileNo", "occupation", "age", "addr1", "bookings.closedDate",
 						"defaulter", "bookings.bookingNo", "bookings.auctioned", "bookings.closed", "bookings.dueDate",
-						"bookings.amountTaken", "bookings.closedDate",  "bookings.bookingDate", "bookings.bookingTrans")
-				.and(ArithmeticOperators.valueOf("bookings.bookingTrans.intrest").sum()).as("totalIntrestPaid")
-				.and(ArithmeticOperators.valueOf("bookings.bookingTrans.principle").sum()).as("totalPrinciplePaid"),
-				//unwind("bookingTrans"),
-				group("brokerNo", "brokerName","contactPerson2", "contactPerson1", "mobileNo", "occupation", "age", "addr1", "defaulter", "bookingNo", "auctioned", "closed", "dueDate",
-						"amountTaken", "closedDate", "bookingDate")
-				.sum("totalPrinciplePaid").as("totalPrinciplePaid")
-								.sum("totalIntrestPaid").as("totalIntrestPaid").count().as("totalTrans"),
-				group("brokerNo", "brokerName", "contactPerson2", "contactPerson1", "mobileNo", "occupation", "age", "addr1", "defaulter").push(when(where("_id.auctioned").is(true))
+						"bookings.amountTaken", "bookings.bookingDate", "bookings.bookingTrans"),
+				unwind("bookingTrans", true),
+				project("brokerNo", "brokerName","contactPerson2",
+						"contactPerson1", "mobileNo", "occupation", "age", "addr1", "closedDate",
+						"defaulter", "bookingNo", "auctioned", "closed", "dueDate",
+						"amountTaken", "bookingDate", "bookingTrans.principle", "bookingTrans.intrest")
+				.and(when(where("bookingTrans.transId").gt(0)).then(1).otherwise(0))
+				.as("totalTrans"),
+				group("brokerNo", "brokerName","contactPerson2", "contactPerson1", "closedDate", "mobileNo", "occupation", "age", "addr1", "defaulter",
+						"bookingNo", "auctioned", "closed", "dueDate",
+						"amountTaken", "bookingDate").sum("principle").as("totalPrinciplePaid")
+								.sum("intrest").as("totalIntrestPaid")
+								.sum("totalTrans").as("totalTrans"),
+				group("brokerNo", "brokerName","contactPerson2", "contactPerson1", "mobileNo", "occupation", "age", "addr1", "defaulter")
+				.push(when(where("_id.auctioned").is(true))
 						.then(new Document().append("bookingNo", "$_id.bookingNo")
 								.append("bookingDate", "$_id.bookingDate").append("actualAmount", "$_id.amountTaken")
 								.append("closedDate", "$_id.closedDate")
