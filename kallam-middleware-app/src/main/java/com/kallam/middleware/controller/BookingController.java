@@ -23,5 +23,10 @@ public class BookingController {
     public Document getBrokers(@PathVariable String searchValue, @PathVariable String compCode) {
 		return bookingService.getBookingService(searchValue, compCode);
     }
+	
+	@RequestMapping(value = "/get-broker-booking-Lst/{brokerNo}/{compCode}", method=RequestMethod.GET)
+	public Document getBrokerBooking(@PathVariable String brokerNo, @PathVariable String compCode) {
+		return bookingService.getBrokerBooking(brokerNo, compCode);
+	}
 
 }
