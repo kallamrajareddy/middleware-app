@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperationContext;
+import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,8 @@ public class BookingServiceImpl implements BookingService {
 								.and(ArithmeticOperators.valueOf("auctionedCount").add("closedCount").add("activeCount")
 										.add("pendingCount"))
 								.as("total"));
-		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg, Brokers.class, DBObject.class);
+		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
 		List<DBObject> actualResults = results.getMappedResults();
 		List<DBObject> emptyResults = getEmptyBookingBrokers(search, compCode);
 		Document doc = new Document().append("actualResults", actualResults).append("emptyResults", emptyResults);
@@ -109,34 +111,45 @@ public class BookingServiceImpl implements BookingService {
 				project("brokerNo", "brokerName","contactPerson2",
 						"contactPerson1", "mobileNo", "occupation", "age", "addr1", "bookings.closedDate",
 						"defaulter", "bookings.bookingNo", "bookings.auctioned", "bookings.closed", "bookings.dueDate",
-						"bookings.amountTaken", "bookings.bookingDate", "bookings.bookingTrans"),
+						"bookings.amountTaken", "bookings.loanType", "bookings.tranType", "bookings.bookingDate", "bookings.bookingTrans"),
 				unwind("bookingTrans", true),
 				project("brokerNo", "brokerName","contactPerson2",
 						"contactPerson1", "mobileNo", "occupation", "age", "addr1", "closedDate",
-						"defaulter", "bookingNo", "auctioned", "closed", "dueDate",
-						"amountTaken", "bookingDate", "bookingTrans.principle", "bookingTrans.intrest")
+						"defaulter", "bookingNo", "auctioned", "closed", "dueDate", "loanType", "tranType",
+						"amountTaken", "bookingDate", "bookingTrans.principle", "bookingTrans.intrest", "bookingTrans.rcvDate")
 				.and(when(where("bookingTrans.transId").gt(0)).then(1).otherwise(0))
 				.as("totalTrans"),
 				group("brokerNo", "brokerName","contactPerson2", "contactPerson1", "closedDate", "mobileNo", "occupation", "age", "addr1", "defaulter",
-						"bookingNo", "auctioned", "closed", "dueDate",
+						"bookingNo", "auctioned", "closed", "dueDate", "loanType", "tranType",
 						"amountTaken", "bookingDate").sum("principle").as("totalPrinciplePaid")
 								.sum("intrest").as("totalIntrestPaid")
-								.sum("totalTrans").as("totalTrans"),
+								.sum("totalTrans").as("totalTrans")
+								.last("rcvDate").as("lastTransDate"),
+								//.push("rcvDate").as("lstTransDates"),
 				group("brokerNo", "brokerName","contactPerson2", "contactPerson1", "mobileNo", "occupation", "age", "addr1", "defaulter")
 				.push(when(where("_id.auctioned").is(true))
 						.then(new Document().append("bookingNo", "$_id.bookingNo")
-								.append("bookingDate", "$_id.bookingDate").append("actualAmount", "$_id.amountTaken")
+								.append("bookingDate", "$_id.bookingDate")
+								.append("actualAmount", "$_id.amountTaken")
 								.append("closedDate", "$_id.closedDate")
-								.append("dueDate", "$_id.dueDate").append("totalPrinciplePaid", "$totalPrinciplePaid")
-								.append("totalIntrestPaid", "$totalIntrestPaid").append("totalTrans", "$totalTrans"))
+								.append("tranType", "$_id.tranType")
+								.append("loanType", "$_id.loanType")
+								.append("dueDate", "$_id.dueDate")
+								.append("totalPrinciplePaid", "$totalPrinciplePaid")
+								.append("lastTransDate", "$lastTransDate")
+								.append("totalIntrestPaid", "$totalIntrestPaid")
+								.append("totalTrans", "$totalTrans"))
 						.otherwise("$$REMOVE")).as("auctionedBookings")
 						.push(when(
 								where("").andOperator(where("_id.auctioned").is(false), where("_id.closed").is(true)))
 										.then(new Document().append("bookingNo", "$_id.bookingNo")
 												.append("bookingDate", "$_id.bookingDate")
 												.append("dueDate", "$_id.dueDate")
+												.append("tranType", "$_id.tranType")
+												.append("loanType", "$_id.loanType")
 												.append("closedDate", "$_id.closedDate")
 												.append("actualAmount", "$_id.amountTaken")
+												.append("lastTransDate", "$lastTransDate")
 												.append("totalPrinciplePaid", "$totalPrinciplePaid")
 												.append("totalIntrestPaid", "$totalIntrestPaid")
 												.append("totalTrans", "$totalTrans"))
@@ -147,6 +160,9 @@ public class BookingServiceImpl implements BookingService {
 										.then(new Document().append("bookingNo", "$_id.bookingNo")
 												.append("bookingDate", "$_id.bookingDate")
 												.append("dueDate", "$_id.dueDate")
+												.append("tranType", "$_id.tranType")
+												.append("loanType", "$_id.loanType")
+												.append("lastTransDate", "$lastTransDate")
 												.append("closedDate", "$_id.closedDate")
 												.append("actualAmount", "$_id.amountTaken")
 												.append("totalPrinciplePaid", "$totalPrinciplePaid")
@@ -159,6 +175,9 @@ public class BookingServiceImpl implements BookingService {
 										.then(new Document().append("bookingNo", "$_id.bookingNo")
 												.append("bookingDate", "$_id.bookingDate")
 												.append("dueDate", "$_id.dueDate")
+												.append("tranType", "$_id.tranType")
+												.append("loanType", "$_id.loanType")
+												.append("lastTransDate", "$lastTransDate")
 												.append("closedDate", "$_id.closedDate")
 												.append("actualAmount", "$_id.amountTaken")
 												.append("totalPrinciplePaid", "$totalPrinciplePaid")
@@ -168,7 +187,9 @@ public class BookingServiceImpl implements BookingService {
 						.as("pendingBookings")
 
 		);
-		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg, Brokers.class, DBObject.class);
+		//.withOptions(AggregationOptions.builder().allowDiskUse(true).cursorBatchSize(10000).build())
+		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
 		List<DBObject> actualResults = results.getMappedResults();
 		// List<DBObject> emptyResults = getEmptyBookingBrokers(search, compCode);
 		Document doc = new Document().append("actualResults", actualResults);
@@ -193,7 +214,8 @@ public class BookingServiceImpl implements BookingService {
 						.and(when(where("brokerName").is("@#$%")).then(0).otherwise(0)).as("activeCount")
 						.and(when(where("brokerName").is("@#$%")).then(0).otherwise(0)).as("pendingCount")
 						.and(when(where("brokerName").is("@#$%")).then(0).otherwise(0)).as("total"));
-		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg, Brokers.class, DBObject.class);
+		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
 		return results.getMappedResults();
 	}
 
