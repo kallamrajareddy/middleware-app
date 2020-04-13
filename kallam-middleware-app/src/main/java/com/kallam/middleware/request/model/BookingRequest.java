@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.kallam.middleware.model.broker.BookingTrans;
 import com.kallam.middleware.model.broker.Items;
 
 public class BookingRequest {
 	public Date bookingDate;
+	public String brokerNo;
+	public String companyCode;
 	public String bookingNo;
 	public String bookingCode;
 	public String remarks;
@@ -24,6 +25,7 @@ public class BookingRequest {
 	public String closeType;
 	public String tranType;
 	public String loanType;
+	public String intrestType;
 	public Boolean closed;
 	public Boolean auctioned;
 	public Date valueDate;
@@ -39,14 +41,16 @@ public class BookingRequest {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public BookingRequest(Date bookingDate, String bookingNo, String bookingCode, String remarks,
-			Integer expDays, Double grossWeight, Double netWeight, Double purity, String approxAmt, Double amountTaken,
-			Date dueDate, Date repayDate, Double repayAmount, String closeType,
-			String tranType, String loanType, Boolean closed, Boolean auctioned, Date valueDate,
-			Double intrestRate, Date closedDate, List<Items> items, List<BookingTransRequest> bookingTrans,
-			String createdBy, String updatedBy, Date createdDt, Date updatedDt) {
+	public BookingRequest(Date bookingDate, String bookingNo, String bookingCode, String remarks, Integer expDays,  String brokerNo, String companyCode,
+			Double grossWeight, Double netWeight, Double purity, String approxAmt, Double amountTaken, Date dueDate,
+			Date repayDate, Double repayAmount, String closeType, String tranType, String loanType, String intrestType,
+			Boolean closed, Boolean auctioned, Date valueDate, Double intrestRate, Date closedDate, List<Items> items,
+			List<BookingTransRequest> bookingTrans, String createdBy, String updatedBy, Date createdDt,
+			Date updatedDt) {
 		super();
 		this.bookingDate = bookingDate;
+		this.brokerNo = brokerNo;
+		this.companyCode = companyCode;
 		this.bookingNo = bookingNo;
 		this.bookingCode = bookingCode;
 		this.remarks = remarks;
@@ -62,6 +66,7 @@ public class BookingRequest {
 		this.closeType = closeType;
 		this.tranType = tranType;
 		this.loanType = loanType;
+		this.intrestType = intrestType;
 		this.closed = closed;
 		this.auctioned = auctioned;
 		this.valueDate = valueDate;
@@ -79,6 +84,18 @@ public class BookingRequest {
 	}
 	public void setBookingDate(Date bookingDate) {
 		this.bookingDate = bookingDate;
+	}
+	public String getBrokerNo() {
+		return brokerNo;
+	}
+	public void setBrokerNo(String brokerNo) {
+		this.brokerNo = brokerNo;
+	}
+	public String getCompanyCode() {
+		return companyCode;
+	}
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
 	}
 	public String getBookingNo() {
 		return bookingNo;
@@ -169,6 +186,12 @@ public class BookingRequest {
 	}
 	public void setLoanType(String loanType) {
 		this.loanType = loanType;
+	}
+	public String getIntrestType() {
+		return intrestType;
+	}
+	public void setIntrestType(String intrestType) {
+		this.intrestType = intrestType;
 	}
 	public Boolean getClosed() {
 		return closed;

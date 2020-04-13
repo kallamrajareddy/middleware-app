@@ -13,6 +13,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bson.BsonUndefined;
@@ -28,8 +30,12 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 import org.springframework.stereotype.Service;
 
+import com.kallam.middleware.MongoDateUtil;
 import com.kallam.middleware.helper.MongoLocalDateTime;
+import com.kallam.middleware.model.broker.Bookings;
 import com.kallam.middleware.model.broker.Brokers;
+import com.kallam.middleware.model.broker.Items;
+import com.kallam.middleware.request.model.BookingRequest;
 import com.mongodb.DBObject;
 
 @Service
@@ -217,6 +223,43 @@ public class BookingServiceImpl implements BookingService {
 		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
 		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
 		return results.getMappedResults();
+	}
+
+	@Override
+	public Brokers createBooking(BookingRequest req) {
+		Brokers broker =mongoTemplate.findOne(query(where("brokerNo").is(req.getBrokerNo()).andOperator(where("companyCode").is(req.getCompanyCode()))), Brokers.class);
+		Bookings booking  = new Bookings();
+		booking.setAmountTaken(req.getAmountTaken());
+		booking.setApproxAmt(req.getApproxAmt());
+		booking.setAuctioned(req.getAuctioned());
+		booking.setBookingCode(new Date().toGMTString());
+		booking.setBookingNo(req.getBookingCode());
+		booking.setBookingNo(req.getBookingNo());
+		booking.setBookingDate(MongoDateUtil.toLocal(req.getBookingDate()));
+		booking.setClosed(false);
+		booking.setCreatedBy(req.getCreatedBy());
+		booking.setCreatedDt(MongoDateUtil.toLocal(new Date()));
+		booking.setDueDate(MongoDateUtil.toLocal(req.getDueDate()));
+		booking.setGrossWeight(req.getGrossWeight());
+		booking.setIntrestRate(req.getIntrestRate());
+		booking.setIntrestType(req.getIntrestType());
+		booking.setLoanType(req.getLoanType());
+		booking.setNetWeight(req.getNetWeight());
+		booking.setPurity(req.getPurity());
+		booking.setRemarks(req.getRemarks());
+		booking.setTranType(req.getTranType());
+		booking.setUpdatedBy(req.getUpdatedBy());
+		booking.setUpdatedDt(MongoDateUtil.toLocal(new Date()));
+		booking.setValueDate(MongoDateUtil.toLocal(req.getValueDate()));
+		if(req.getItems().size() >0) {
+			for (int i = 0; i < req.getItems().size(); i++) {
+				Items item = req.getItems().get(i);
+				item.setCreatedBy(req.getCreatedBy());
+				item.setUpdatedBy(req.getUpdatedBy());
+				booking.getItems().add(item);
+			}
+		}
+		return mongoTemplate.save(broker);
 	}
 
 }

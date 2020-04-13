@@ -23,6 +23,7 @@ public class Bookings {
 	public String closeType;
 	public String tranType;
 	public String loanType;
+	public String intrestType;
 	public Boolean closed;
 	public Boolean auctioned;
 	public MongoLocalDateTime valueDate;
@@ -34,44 +35,6 @@ public class Bookings {
 	public String updatedBy;
 	public MongoLocalDateTime createdDt;
 	public MongoLocalDateTime updatedDt;
-	public Bookings() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Bookings(MongoLocalDateTime bookingDate, String bookingNo, String bookingCode, String remarks, Integer expDays,
-			Double grossWeight, Double netWeight, Double purity, String approxAmt, Double amountTaken, MongoLocalDateTime dueDate,
-			MongoLocalDateTime repayDate, Double repayAmount, String closeType, String tranType, String loanType, Boolean closed,
-			Boolean auctioned, MongoLocalDateTime valueDate, Double intrestRate, MongoLocalDateTime closedDate, List<Items> items,
-			List<BookingTrans> bookingTrans, String createdBy, String updatedBy, MongoLocalDateTime createdDt, MongoLocalDateTime updatedDt) {
-		super();
-		this.bookingDate = bookingDate;
-		this.bookingNo = bookingNo;
-		this.bookingCode = bookingCode;
-		this.remarks = remarks;
-		this.expDays = expDays;
-		this.grossWeight = grossWeight;
-		this.netWeight = netWeight;
-		this.purity = purity;
-		this.approxAmt = approxAmt;
-		this.amountTaken = amountTaken;
-		this.dueDate = dueDate;
-		this.repayDate = repayDate;
-		this.repayAmount = repayAmount;
-		this.closeType = closeType;
-		this.tranType = tranType;
-		this.loanType = loanType;
-		this.closed = closed;
-		this.auctioned = auctioned;
-		this.valueDate = valueDate;
-		this.intrestRate = intrestRate;
-		this.closedDate = closedDate;
-		this.items = items;
-		this.bookingTrans = bookingTrans;
-		this.createdBy = createdBy;
-		this.updatedBy = updatedBy;
-		this.createdDt = createdDt;
-		this.updatedDt = updatedDt;
-	}
 	public MongoLocalDateTime getBookingDate() {
 		return bookingDate;
 	}
@@ -168,6 +131,12 @@ public class Bookings {
 	public void setLoanType(String loanType) {
 		this.loanType = loanType;
 	}
+	public String getIntrestType() {
+		return intrestType;
+	}
+	public void setIntrestType(String intrestType) {
+		this.intrestType = intrestType;
+	}
 	public Boolean getClosed() {
 		return closed;
 	}
@@ -232,6 +201,47 @@ public class Bookings {
 		return updatedDt;
 	}
 	public void setUpdatedDt(MongoLocalDateTime updatedDt) {
+		this.updatedDt = updatedDt;
+	}
+	public Bookings() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Bookings(MongoLocalDateTime bookingDate, String bookingNo, String bookingCode, String remarks,
+			Integer expDays, Double grossWeight, Double netWeight, Double purity, String approxAmt, Double amountTaken,
+			MongoLocalDateTime dueDate, MongoLocalDateTime repayDate, Double repayAmount, String closeType,
+			String tranType, String loanType, String intrestType, Boolean closed, Boolean auctioned,
+			MongoLocalDateTime valueDate, Double intrestRate, MongoLocalDateTime closedDate, List<Items> items,
+			List<BookingTrans> bookingTrans, String createdBy, String updatedBy, MongoLocalDateTime createdDt,
+			MongoLocalDateTime updatedDt) {
+		super();
+		this.bookingDate = bookingDate;
+		this.bookingNo = bookingNo;
+		this.bookingCode = bookingCode;
+		this.remarks = remarks;
+		this.expDays = expDays;
+		this.grossWeight = grossWeight;
+		this.netWeight = netWeight;
+		this.purity = purity;
+		this.approxAmt = approxAmt;
+		this.amountTaken = amountTaken;
+		this.dueDate = dueDate;
+		this.repayDate = repayDate;
+		this.repayAmount = repayAmount;
+		this.closeType = closeType;
+		this.tranType = tranType;
+		this.loanType = loanType;
+		this.intrestType = intrestType;
+		this.closed = closed;
+		this.auctioned = auctioned;
+		this.valueDate = valueDate;
+		this.intrestRate = intrestRate;
+		this.closedDate = closedDate;
+		this.items = items;
+		this.bookingTrans = bookingTrans;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.createdDt = createdDt;
 		this.updatedDt = updatedDt;
 	}
 	}

@@ -17,10 +17,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationExpression;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperationContext;
+import org.springframework.data.mongodb.core.aggregation.AggregationOptions;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
+import org.springframework.data.mongodb.core.aggregation.ConvertOperators;
+import org.springframework.data.mongodb.core.aggregation.ConvertOperators.ToLong;
+import org.springframework.data.mongodb.core.aggregation.StringOperators;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -85,9 +90,15 @@ public class BrokerServiceImpl implements BrokerService{
 
 	@Override
 	public String getBrokersCount(String compCode) {
-		long count = (mongoTemplate.count(query(where("").andOperator(where("companyCode").is(compCode))), Brokers.class)+1);
-		String code = compCode + "-"+String.format ("%04d", count);
-		return  code;
+		Aggregation agg = newAggregation(
+				project().and(StringOperators.valueOf("brokerNo").split("-")).as("convertedBrokerNo"),
+				project().and("convertedBrokerNo").arrayElementAt(1).as("convertedBrokerNo"),
+				project().and(ConvertOperators.ToLong.toLong("$convertedBrokerNo")).as("convertedBrokerNo"),
+				group().max("convertedBrokerNo").as("brokerNo"),
+				project().and(ArithmeticOperators.valueOf("brokerNo").add(1)).as("brokerNo")
+				);
+		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+		return compCode+"-"+ mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class).getMappedResults().get(0).get("brokerNo");
 	}
 
 
