@@ -145,7 +145,9 @@ public class BrokerServiceImpl implements BrokerService{
 		broker.setUpdatedBy(brokerRequest.getUpdatedBy());
 		broker.setUpdatedDt(MongoDateUtil.toLocal(new Date()));
 		broker.setZipCode(brokerRequest.getZipCode());
-		copyImage(custImage, brokerRequest.getBrokerNo());
+		if(custImage != null) {
+			copyImage(custImage, brokerRequest.getBrokerNo());
+		}
 		return mongoTemplate.save(broker);
 	}
 	

@@ -259,6 +259,7 @@ public class BookingServiceImpl implements BookingService {
 				booking.getItems().add(item);
 			}
 		}
+		broker.getBookings().add(booking);
 		return mongoTemplate.save(broker);
 	}
 
