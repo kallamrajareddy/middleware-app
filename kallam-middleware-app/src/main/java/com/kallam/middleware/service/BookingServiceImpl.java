@@ -21,6 +21,7 @@ import org.bson.BsonUndefined;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -36,6 +37,7 @@ import com.kallam.middleware.model.broker.Bookings;
 import com.kallam.middleware.model.broker.Brokers;
 import com.kallam.middleware.model.broker.Items;
 import com.kallam.middleware.request.model.BookingRequest;
+import com.kallam.middleware.request.model.DetailBookingRequest;
 import com.mongodb.DBObject;
 
 @Service
@@ -162,7 +164,7 @@ public class BookingServiceImpl implements BookingService {
 										.otherwise("$$REMOVE"))
 						.as("closedBookings")
 						.push(when(where("").andOperator(where("_id.auctioned").is(false),
-								where("_id.closed").is(false), where("_id.dueDate").gt(MongoLocalDateTime.of(now))))
+								where("_id.closed").is(false), where("_id.dueDate").gte(MongoLocalDateTime.of(now))))
 										.then(new Document().append("bookingNo", "$_id.bookingNo")
 												.append("bookingDate", "$_id.bookingDate")
 												.append("dueDate", "$_id.dueDate")
@@ -177,7 +179,7 @@ public class BookingServiceImpl implements BookingService {
 										.otherwise("$$REMOVE"))
 						.as("activeBookings")
 						.push(when(where("").andOperator(where("_id.auctioned").is(false),
-								where("_id.closed").is(false), where("_id.dueDate").lte(MongoLocalDateTime.of(now))))
+								where("_id.closed").is(false), where("_id.dueDate").lt(MongoLocalDateTime.of(now))))
 										.then(new Document().append("bookingNo", "$_id.bookingNo")
 												.append("bookingDate", "$_id.bookingDate")
 												.append("dueDate", "$_id.dueDate")
@@ -237,6 +239,7 @@ public class BookingServiceImpl implements BookingService {
 		booking.setBookingNo(req.getBookingNo());
 		booking.setBookingDate(MongoDateUtil.toLocal(req.getBookingDate()));
 		booking.setClosed(false);
+		booking.setAuctioned(false);
 		booking.setCreatedBy(req.getCreatedBy());
 		booking.setCreatedDt(MongoDateUtil.toLocal(new Date()));
 		booking.setDueDate(MongoDateUtil.toLocal(req.getDueDate()));
@@ -261,6 +264,21 @@ public class BookingServiceImpl implements BookingService {
 		}
 		broker.getBookings().add(booking);
 		return mongoTemplate.save(broker);
+	}
+
+	@Override
+	public DBObject getBookingDetails(DetailBookingRequest req) {
+		Aggregation agg = newAggregation(
+				match(where("").andOperator(where("brokerNo").is(req.getBrokerNo()),where("companyCode").is(req.getCompanyCode()))),
+				unwind("bookings"),
+				match(where("bookings.bookingNo").is(req.getBookingNo())),
+				//sort(Direction.DESC, "stockDemandPerItem.demand"),
+				project("brokerNo", "brokerName", "defaulter", "otherPhones1",
+						"otherPhones2", "mobileNo", "occupation", "age", "addr1", "addr2", "addr3", "area", "town", "bookings").andExclude("_id")
+				);
+		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
+		return results.getMappedResults().get(0);
 	}
 
 }
