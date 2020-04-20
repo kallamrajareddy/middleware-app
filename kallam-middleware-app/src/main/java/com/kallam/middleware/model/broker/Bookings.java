@@ -17,8 +17,6 @@ public class Bookings {
 	public Double purity;
 	public String approxAmt;
 	public Double amountTaken;
-	public MongoLocalDateTime dueDate;
-	public MongoLocalDateTime repayDate;
 	public Double repayAmount;
 	public String closeType;
 	public String tranType;
@@ -26,7 +24,11 @@ public class Bookings {
 	public String intrestType;
 	public Boolean closed;
 	public Boolean auctioned;
+	public MongoLocalDateTime repayDate;
+	public MongoLocalDateTime dueDate;
 	public MongoLocalDateTime valueDate;
+	public MongoLocalDateTime actulDueDate;
+	public MongoLocalDateTime actulValueDate;
 	public Double intrestRate;
 	public MongoLocalDateTime closedDate;
 	public List<Items> items = new ArrayList<Items>();
@@ -35,6 +37,48 @@ public class Bookings {
 	public String updatedBy;
 	public MongoLocalDateTime createdDt;
 	public MongoLocalDateTime updatedDt;
+	public Bookings() {
+		super();
+	}
+	public Bookings(MongoLocalDateTime bookingDate, String bookingNo, String bookingCode, String remarks,
+			Integer expDays, Double grossWeight, Double netWeight, Double purity, String approxAmt, Double amountTaken,
+			Double repayAmount, String closeType, String tranType, String loanType, String intrestType, Boolean closed,
+			Boolean auctioned, MongoLocalDateTime repayDate, MongoLocalDateTime dueDate, MongoLocalDateTime valueDate,
+			MongoLocalDateTime actulDueDate, MongoLocalDateTime actulValueDate, Double intrestRate,
+			MongoLocalDateTime closedDate, List<Items> items, List<BookingTrans> bookingTrans, String createdBy,
+			String updatedBy, MongoLocalDateTime createdDt, MongoLocalDateTime updatedDt) {
+		super();
+		this.bookingDate = bookingDate;
+		this.bookingNo = bookingNo;
+		this.bookingCode = bookingCode;
+		this.remarks = remarks;
+		this.expDays = expDays;
+		this.grossWeight = grossWeight;
+		this.netWeight = netWeight;
+		this.purity = purity;
+		this.approxAmt = approxAmt;
+		this.amountTaken = amountTaken;
+		this.repayAmount = repayAmount;
+		this.closeType = closeType;
+		this.tranType = tranType;
+		this.loanType = loanType;
+		this.intrestType = intrestType;
+		this.closed = closed;
+		this.auctioned = auctioned;
+		this.repayDate = repayDate;
+		this.dueDate = dueDate;
+		this.valueDate = valueDate;
+		this.actulDueDate = actulDueDate;
+		this.actulValueDate = actulValueDate;
+		this.intrestRate = intrestRate;
+		this.closedDate = closedDate;
+		this.items = items;
+		this.bookingTrans = bookingTrans;
+		this.createdBy = createdBy;
+		this.updatedBy = updatedBy;
+		this.createdDt = createdDt;
+		this.updatedDt = updatedDt;
+	}
 	public MongoLocalDateTime getBookingDate() {
 		return bookingDate;
 	}
@@ -95,18 +139,6 @@ public class Bookings {
 	public void setAmountTaken(Double amountTaken) {
 		this.amountTaken = amountTaken;
 	}
-	public MongoLocalDateTime getDueDate() {
-		return dueDate;
-	}
-	public void setDueDate(MongoLocalDateTime dueDate) {
-		this.dueDate = dueDate;
-	}
-	public MongoLocalDateTime getRepayDate() {
-		return repayDate;
-	}
-	public void setRepayDate(MongoLocalDateTime repayDate) {
-		this.repayDate = repayDate;
-	}
 	public Double getRepayAmount() {
 		return repayAmount;
 	}
@@ -149,11 +181,35 @@ public class Bookings {
 	public void setAuctioned(Boolean auctioned) {
 		this.auctioned = auctioned;
 	}
+	public MongoLocalDateTime getRepayDate() {
+		return repayDate;
+	}
+	public void setRepayDate(MongoLocalDateTime repayDate) {
+		this.repayDate = repayDate;
+	}
+	public MongoLocalDateTime getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(MongoLocalDateTime dueDate) {
+		this.dueDate = dueDate;
+	}
 	public MongoLocalDateTime getValueDate() {
 		return valueDate;
 	}
 	public void setValueDate(MongoLocalDateTime valueDate) {
 		this.valueDate = valueDate;
+	}
+	public MongoLocalDateTime getActulDueDate() {
+		return actulDueDate;
+	}
+	public void setActulDueDate(MongoLocalDateTime actulDueDate) {
+		this.actulDueDate = actulDueDate;
+	}
+	public MongoLocalDateTime getActulValueDate() {
+		return actulValueDate;
+	}
+	public void setActulValueDate(MongoLocalDateTime actulValueDate) {
+		this.actulValueDate = actulValueDate;
 	}
 	public Double getIntrestRate() {
 		return intrestRate;
@@ -201,47 +257,6 @@ public class Bookings {
 		return updatedDt;
 	}
 	public void setUpdatedDt(MongoLocalDateTime updatedDt) {
-		this.updatedDt = updatedDt;
-	}
-	public Bookings() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Bookings(MongoLocalDateTime bookingDate, String bookingNo, String bookingCode, String remarks,
-			Integer expDays, Double grossWeight, Double netWeight, Double purity, String approxAmt, Double amountTaken,
-			MongoLocalDateTime dueDate, MongoLocalDateTime repayDate, Double repayAmount, String closeType,
-			String tranType, String loanType, String intrestType, Boolean closed, Boolean auctioned,
-			MongoLocalDateTime valueDate, Double intrestRate, MongoLocalDateTime closedDate, List<Items> items,
-			List<BookingTrans> bookingTrans, String createdBy, String updatedBy, MongoLocalDateTime createdDt,
-			MongoLocalDateTime updatedDt) {
-		super();
-		this.bookingDate = bookingDate;
-		this.bookingNo = bookingNo;
-		this.bookingCode = bookingCode;
-		this.remarks = remarks;
-		this.expDays = expDays;
-		this.grossWeight = grossWeight;
-		this.netWeight = netWeight;
-		this.purity = purity;
-		this.approxAmt = approxAmt;
-		this.amountTaken = amountTaken;
-		this.dueDate = dueDate;
-		this.repayDate = repayDate;
-		this.repayAmount = repayAmount;
-		this.closeType = closeType;
-		this.tranType = tranType;
-		this.loanType = loanType;
-		this.intrestType = intrestType;
-		this.closed = closed;
-		this.auctioned = auctioned;
-		this.valueDate = valueDate;
-		this.intrestRate = intrestRate;
-		this.closedDate = closedDate;
-		this.items = items;
-		this.bookingTrans = bookingTrans;
-		this.createdBy = createdBy;
-		this.updatedBy = updatedBy;
-		this.createdDt = createdDt;
 		this.updatedDt = updatedDt;
 	}
 	}

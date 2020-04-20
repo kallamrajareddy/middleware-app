@@ -242,8 +242,8 @@ public class BookingServiceImpl implements BookingService {
 		booking.setAuctioned(false);
 		booking.setCreatedBy(req.getCreatedBy());
 		booking.setCreatedDt(MongoDateUtil.toLocal(new Date()));
-		booking.setDueDate(MongoDateUtil.toLocal(req.getDueDate()));
 		booking.setGrossWeight(req.getGrossWeight());
+		booking.setActulDueDate(MongoDateUtil.toLocal(req.getDueDate()));
 		booking.setIntrestRate(req.getIntrestRate());
 		booking.setIntrestType(req.getIntrestType());
 		booking.setLoanType(req.getLoanType());
@@ -254,6 +254,7 @@ public class BookingServiceImpl implements BookingService {
 		booking.setUpdatedBy(req.getUpdatedBy());
 		booking.setUpdatedDt(MongoDateUtil.toLocal(new Date()));
 		booking.setValueDate(MongoDateUtil.toLocal(req.getValueDate()));
+		booking.setActulValueDate(MongoDateUtil.toLocal(req.getValueDate()));
 		if(req.getItems().size() >0) {
 			for (int i = 0; i < req.getItems().size(); i++) {
 				Items item = req.getItems().get(i);
@@ -275,6 +276,40 @@ public class BookingServiceImpl implements BookingService {
 				//sort(Direction.DESC, "stockDemandPerItem.demand"),
 				project("brokerNo", "brokerName", "defaulter", "otherPhones1",
 						"otherPhones2", "mobileNo", "occupation", "age", "addr1", "addr2", "addr3", "area", "town", "bookings").andExclude("_id")
+				);
+		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
+		return results.getMappedResults().get(0);
+	}
+	
+	@Override
+	public List<DBObject> getBookingsDetails(DetailBookingRequest req) {
+		Aggregation agg = newAggregation(
+				unwind("bookings"),
+				match(where("")
+						.orOperator(where("brokerNo").regex(".*" + req.getBrokerNo() + ".*", "i"),
+								where("brokerName").regex(".*" + req.getBrokerNo() + ".*", "i"),
+								where("mobileNo").regex(".*" + req.getBrokerNo() + ".*", "i"),
+								where("bookings.bookingNo").regex(".*" + req.getBrokerNo() + ".*", "i"),
+								where("bookings.bookingCode").regex(".*" + req.getBrokerNo() + ".*", "i"))
+						.andOperator(where("companyCode").is(req.getCompanyCode()),where("bookings.closed").is(false))),
+				project("brokerNo", "brokerName", "defaulter", "bookings.bookingDate" , "bookings.bookingNo", "bookings.amountTaken", "bookings.closed", "bookings.auctioned")
+				);
+		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
+		return results.getMappedResults();
+	}
+	@Override
+	public DBObject getBookingRecipts(DetailBookingRequest req) {
+		Aggregation agg = newAggregation(
+				match(where("").andOperator(where("brokerNo").is(req.getBrokerNo()),where("companyCode").is(req.getCompanyCode()))),
+				unwind("bookings"),
+				match(where("").andOperator(where("bookings.bookingNo").is(req.getBookingNo()),where("bookings.closed").is(false))),
+				project("brokerNo", "brokerName", "defaulter", "bookings.bookingDate", "mobileNo"
+						, "bookings.bookingNo", "bookings.amountTaken", "bookings.closed", "bookings.auctioned"
+						, "bookings.dueDate", "bookings.valueDate"
+						, "bookings.netWeight", "bookings.purity", "bookings.intrestType", "bookings.intrestRate", "bookings.bookingTrans"
+						)
 				);
 		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
 		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);

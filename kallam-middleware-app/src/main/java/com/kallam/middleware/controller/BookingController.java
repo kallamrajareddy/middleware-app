@@ -1,6 +1,7 @@
 package com.kallam.middleware.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 
 import org.bson.Document;
@@ -45,6 +46,30 @@ public class BookingController {
 		try {
 			req = new ObjectMapper().readValue(form, DetailBookingRequest.class);
 			return bookingService.getBookingDetails(req);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@RequestMapping(value = "/get-booking-recipts", method=RequestMethod.POST)
+	public DBObject getBookingRecipts(@RequestParam("form") String form) {
+		DetailBookingRequest req;
+		try {
+			req = new ObjectMapper().readValue(form, DetailBookingRequest.class);
+			return bookingService.getBookingRecipts(req);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@RequestMapping(value = "/get-broker-bookings-details", method=RequestMethod.POST)
+	public List<DBObject> getBookingsDetails(@RequestParam("form") String form) {
+		DetailBookingRequest req;
+		try {
+			req = new ObjectMapper().readValue(form, DetailBookingRequest.class);
+			return bookingService.getBookingsDetails(req);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

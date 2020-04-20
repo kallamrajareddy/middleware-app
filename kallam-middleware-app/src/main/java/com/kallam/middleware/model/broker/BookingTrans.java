@@ -7,19 +7,27 @@ public class BookingTrans {
 	public MongoLocalDateTime rcvDate;
 	public Double intrest;
 	public Double principle;
-	public String description;
+	public String remarks;
+	public MongoLocalDateTime dueDate;
+	public MongoLocalDateTime valueDate;
 	public String createdBy;
 	public String updatedBy;
 	public MongoLocalDateTime createdDt;
 	public MongoLocalDateTime updatedDt;
-	public BookingTrans(Integer transId, MongoLocalDateTime rcvDate, Double intrest, Double principle, String description,
-			String createdBy, String updatedBy, MongoLocalDateTime createdDt, MongoLocalDateTime updatedDt) {
+	public BookingTrans() {
+		super();
+	}
+	public BookingTrans(Integer transId, MongoLocalDateTime rcvDate, Double intrest, Double principle, String remarks,
+			MongoLocalDateTime dueDate, MongoLocalDateTime valueDate, String createdBy, String updatedBy,
+			MongoLocalDateTime createdDt, MongoLocalDateTime updatedDt) {
 		super();
 		this.transId = transId;
 		this.rcvDate = rcvDate;
 		this.intrest = intrest;
 		this.principle = principle;
-		this.description = description;
+		this.remarks = remarks;
+		this.dueDate = dueDate;
+		this.valueDate = valueDate;
 		this.createdBy = createdBy;
 		this.updatedBy = updatedBy;
 		this.createdDt = createdDt;
@@ -49,11 +57,23 @@ public class BookingTrans {
 	public void setPrinciple(Double principle) {
 		this.principle = principle;
 	}
-	public String getDescription() {
-		return description;
+	public String getRemarks() {
+		return remarks;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public MongoLocalDateTime getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(MongoLocalDateTime dueDate) {
+		this.dueDate = dueDate;
+	}
+	public MongoLocalDateTime getValueDate() {
+		return valueDate;
+	}
+	public void setValueDate(MongoLocalDateTime valueDate) {
+		this.valueDate = valueDate;
 	}
 	public String getCreatedBy() {
 		return createdBy;

@@ -1,5 +1,7 @@
 package com.kallam.middleware.service;
 
+import java.util.List;
+
 import org.bson.Document;
 
 import com.kallam.middleware.model.broker.Brokers;
@@ -14,4 +16,6 @@ public interface BookingService {
 	Document getBrokerBooking(String brokerNo, String compCode);
 	Brokers createBooking(BookingRequest req);
 	DBObject getBookingDetails(DetailBookingRequest req);
+	List<DBObject> getBookingsDetails(DetailBookingRequest req);
+	DBObject getBookingRecipts(DetailBookingRequest req);
 }
