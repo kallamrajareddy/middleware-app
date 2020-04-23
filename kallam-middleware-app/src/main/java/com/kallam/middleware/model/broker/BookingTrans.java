@@ -3,7 +3,7 @@ package com.kallam.middleware.model.broker;
 import com.kallam.middleware.helper.MongoLocalDateTime;
 
 public class BookingTrans {
-	public Integer transId;
+	public Long transId;
 	public MongoLocalDateTime rcvDate;
 	public Double intrest;
 	public Double principle;
@@ -17,7 +17,7 @@ public class BookingTrans {
 	public BookingTrans() {
 		super();
 	}
-	public BookingTrans(Integer transId, MongoLocalDateTime rcvDate, Double intrest, Double principle, String remarks,
+	public BookingTrans(Long transId, MongoLocalDateTime rcvDate, Double intrest, Double principle, String remarks,
 			MongoLocalDateTime dueDate, MongoLocalDateTime valueDate, String createdBy, String updatedBy,
 			MongoLocalDateTime createdDt, MongoLocalDateTime updatedDt) {
 		super();
@@ -33,10 +33,10 @@ public class BookingTrans {
 		this.createdDt = createdDt;
 		this.updatedDt = updatedDt;
 	}
-	public Integer getTransId() {
+	public Long getTransId() {
 		return transId;
 	}
-	public void setTransId(Integer transId) {
+	public void setTransId(Long transId) {
 		this.transId = transId;
 	}
 	public MongoLocalDateTime getRcvDate() {

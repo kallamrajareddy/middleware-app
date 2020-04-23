@@ -43,13 +43,13 @@ public class KallamMiddlewareAppApplication implements CommandLineRunner {
         //List<Brokers> brokers = this.brokerRepositry.findByBrokerNameLike("ABDUN");//regex("/.*ABDU.*/")
 //        List<Brokers> brokers = mongoTemplate.find(query(where("").orOperator(where("brokerName").regex(".*a.*", "i"),where("addr2").regex(".*15.*", "i"))).limit(400), Brokers.class);
         //List<Brokers> brokers = this.brokerRepositry.findAll();
-		List<Brokers> brokers = mongoTemplate.find(query((where("brokerName").regex(".*a.*", "i"))).limit(400), Brokers.class);
+		//List<Brokers> brokers = mongoTemplate.find(query((where("brokerName").regex(".*a.*", "i"))).limit(400), Brokers.class);
 		/*Brokers brokers = mongoTemplate.findOne(query(where("").orOperator(where("brokerName").regex(".*"+search+".*", "i")
 				,where("mobileNo").regex(".*"+search+".*", "i"))), Brokers.class);
 		brokers.setCreatedDt(convertToLocalDateTimeViaMilisecond(new Date()));
 		brokers.setUpdatedDt(convertToLocalDateTimeViaMilisecond(new Date()));
 		mongoTemplate.save(brokers);*/
-		System.out.println(brokers.size());
+		//System.out.println(brokers.size());
 		
     }
 

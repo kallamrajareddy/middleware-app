@@ -10,6 +10,7 @@ import static org.springframework.data.mongodb.core.aggregation.ConditionalOpera
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,11 +34,13 @@ import org.springframework.stereotype.Service;
 
 import com.kallam.middleware.MongoDateUtil;
 import com.kallam.middleware.helper.MongoLocalDateTime;
+import com.kallam.middleware.model.broker.BookingTrans;
 import com.kallam.middleware.model.broker.Bookings;
 import com.kallam.middleware.model.broker.Brokers;
 import com.kallam.middleware.model.broker.Items;
 import com.kallam.middleware.request.model.BookingRequest;
 import com.kallam.middleware.request.model.DetailBookingRequest;
+import com.kallam.middleware.request.model.NewRecipt;
 import com.mongodb.DBObject;
 
 @Service
@@ -307,13 +310,70 @@ public class BookingServiceImpl implements BookingService {
 				match(where("").andOperator(where("bookings.bookingNo").is(req.getBookingNo()),where("bookings.closed").is(false))),
 				project("brokerNo", "brokerName", "defaulter", "bookings.bookingDate", "mobileNo"
 						, "bookings.bookingNo", "bookings.amountTaken", "bookings.closed", "bookings.auctioned"
-						, "bookings.dueDate", "bookings.valueDate"
+						, "bookings.dueDate", "bookings.valueDate", "bookings.remarks"
 						, "bookings.netWeight", "bookings.purity", "bookings.intrestType", "bookings.intrestRate", "bookings.bookingTrans"
 						)
 				);
 		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
 		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
 		return results.getMappedResults().get(0);
+	}
+
+	@Override
+	public Brokers addRecipt(NewRecipt req) {
+		// TODO Auto-generated method stub
+		Brokers broker =mongoTemplate.findOne(query(where("brokerNo").is(req.getBrokerNo())
+				.andOperator(where("companyCode").is(req.getCompanyCode())
+				.andOperator(where("bookings.bookingNo").is(req.getBookingNo())))), Brokers.class);
+		
+		Instant instant = Instant.now();
+		
+		BookingTrans trans = new BookingTrans();
+		trans.setCreatedBy(req.getCreatedBy());
+		trans.setTransId(instant.toEpochMilli());
+		trans.setCreatedDt(MongoDateUtil.toLocal(new Date()));
+		trans.setDueDate(MongoDateUtil.toLocal(req.getDueDate()));
+		trans.setIntrest(req.getIntrest()==null?0:req.getIntrest());
+		trans.setPrinciple(req.getPrinciple()==null?0:req.getPrinciple());
+		trans.setRcvDate(MongoDateUtil.toLocal(req.getRcvDate()));
+		trans.setRemarks(req.getRemarks());
+		trans.setUpdatedBy(req.getCreatedBy());
+		trans.setUpdatedDt(MongoDateUtil.toLocal(new Date()));
+		trans.setValueDate(MongoDateUtil.toLocal(req.getValueDate()));
+		for(Bookings booking : broker.getBookings()) {
+			if(booking.getBookingNo().equalsIgnoreCase(req.getBookingNo())) {
+				booking.setDueDate(trans.getDueDate());
+				booking.setValueDate(trans.getValueDate());
+				booking.getBookingTrans().add(trans);
+			}
+		}
+		
+		return mongoTemplate.save(broker);
+	}
+
+	@Override
+	public Brokers deleteRecipt(NewRecipt req) {
+				Brokers broker =mongoTemplate.findOne(query(where("brokerNo").is(req.getBrokerNo())
+						.andOperator(where("companyCode").is(req.getCompanyCode())
+						.andOperator(where("bookings.bookingNo").is(req.getBookingNo())))), Brokers.class);
+				for(Bookings booking : broker.getBookings()) {
+					if(booking.getBookingNo().equalsIgnoreCase(req.getBookingNo())) {
+						if(booking.getBookingTrans().size() == 1) {
+							booking.setDueDate(booking.getActulDueDate());
+							booking.setValueDate(booking.getActulValueDate());
+						}
+						if(booking.getBookingTrans().size() > 1) {
+							BookingTrans trans = booking.getBookingTrans().get(booking.getBookingTrans().size()-2);
+							booking.setDueDate(trans.getDueDate());
+							booking.setValueDate(trans.getValueDate());
+						}
+						if(booking.getBookingTrans().get(booking.getBookingTrans().size()-1).getTransId().equals(req.getTransId())) {
+							booking.getBookingTrans().remove(booking.getBookingTrans().size()-1);
+						}
+						
+					}
+				}
+		return mongoTemplate.save(broker);
 	}
 
 }
