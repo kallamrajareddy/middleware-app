@@ -88,5 +88,16 @@ public class BookingController {
 		
 		return null;
     }
+	@RequestMapping(value = "/update-booking", method=RequestMethod.POST)
+	public Brokers updateBooking(@RequestParam("form") String form) {
+		try {
+			BookingRequest req = new ObjectMapper().readValue(form, BookingRequest.class);
+			return bookingService.updateBooking(req);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 }

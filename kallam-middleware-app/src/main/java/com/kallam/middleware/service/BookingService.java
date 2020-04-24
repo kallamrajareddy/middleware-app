@@ -16,6 +16,7 @@ public interface BookingService {
 	Document getBookingService(String search, String compCode);
 	Document getBrokerBooking(String brokerNo, String compCode);
 	Brokers createBooking(BookingRequest req);
+	Brokers updateBooking(BookingRequest req);
 	Brokers addRecipt(NewRecipt req);
 	Brokers deleteRecipt(NewRecipt req);
 	DBObject getBookingDetails(DetailBookingRequest req);

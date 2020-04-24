@@ -236,9 +236,7 @@ public class BookingServiceImpl implements BookingService {
 		Bookings booking  = new Bookings();
 		booking.setAmountTaken(req.getAmountTaken());
 		booking.setApproxAmt(req.getApproxAmt());
-		booking.setAuctioned(req.getAuctioned());
 		booking.setBookingCode(new Date().toGMTString());
-		booking.setBookingNo(req.getBookingCode());
 		booking.setBookingNo(req.getBookingNo());
 		booking.setBookingDate(MongoDateUtil.toLocal(req.getBookingDate()));
 		booking.setClosed(false);
@@ -247,6 +245,7 @@ public class BookingServiceImpl implements BookingService {
 		booking.setCreatedDt(MongoDateUtil.toLocal(new Date()));
 		booking.setGrossWeight(req.getGrossWeight());
 		booking.setActulDueDate(MongoDateUtil.toLocal(req.getDueDate()));
+		booking.setDueDate(MongoDateUtil.toLocal(req.getDueDate()));
 		booking.setIntrestRate(req.getIntrestRate());
 		booking.setIntrestType(req.getIntrestType());
 		booking.setLoanType(req.getLoanType());
@@ -269,6 +268,42 @@ public class BookingServiceImpl implements BookingService {
 		broker.getBookings().add(booking);
 		return mongoTemplate.save(broker);
 	}
+	@Override
+	public Brokers updateBooking(BookingRequest req) {
+		Brokers broker =mongoTemplate.findOne(query(where("brokerNo").is(req.getBrokerNo()).andOperator(where("companyCode").is(req.getCompanyCode()))), Brokers.class);
+		for(Bookings booking : broker.getBookings()) {
+			if(booking.getBookingNo().equalsIgnoreCase(req.getBookingNo())) {
+				booking.setAmountTaken(req.getAmountTaken());
+				
+				booking.setBookingDate(MongoDateUtil.toLocal(req.getBookingDate()));
+				
+				booking.setGrossWeight(req.getGrossWeight());
+				booking.setActulDueDate(MongoDateUtil.toLocal(req.getDueDate()));
+				booking.setDueDate(MongoDateUtil.toLocal(req.getDueDate()));
+				booking.setIntrestRate(req.getIntrestRate());
+				booking.setIntrestType(req.getIntrestType());
+				booking.setLoanType(req.getLoanType());
+				booking.setNetWeight(req.getNetWeight());
+				booking.setPurity(req.getPurity());
+				booking.setRemarks(req.getRemarks());
+				booking.setTranType(req.getTranType());
+				booking.setUpdatedBy(req.getUpdatedBy());
+				booking.setUpdatedDt(MongoDateUtil.toLocal(new Date()));
+				booking.setValueDate(MongoDateUtil.toLocal(req.getValueDate()));
+				booking.setActulValueDate(MongoDateUtil.toLocal(req.getValueDate()));
+				booking.setItems(new ArrayList<>());
+				if(req.getItems().size() >0) {
+					for (int i = 0; i < req.getItems().size(); i++) {
+						Items item = req.getItems().get(i);
+						item.setCreatedBy(req.getCreatedBy());
+						item.setUpdatedBy(req.getUpdatedBy());
+						booking.getItems().add(item);
+					}
+				}
+			}
+		}
+		return mongoTemplate.save(broker);
+	}
 
 	@Override
 	public DBObject getBookingDetails(DetailBookingRequest req) {
@@ -277,8 +312,8 @@ public class BookingServiceImpl implements BookingService {
 				unwind("bookings"),
 				match(where("bookings.bookingNo").is(req.getBookingNo())),
 				//sort(Direction.DESC, "stockDemandPerItem.demand"),
-				project("brokerNo", "brokerName", "defaulter", "otherPhones1",
-						"otherPhones2", "mobileNo", "occupation", "age", "addr1", "addr2", "addr3", "area", "town", "bookings").andExclude("_id")
+				project("brokerNo", "brokerName", "defaulter", "contactPerson1",
+						"contactPerson2", "mobileNo", "occupation", "age", "addr1", "addr2", "addr3", "area", "town", "bookings").andExclude("_id")
 				);
 		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
 		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
