@@ -10,7 +10,7 @@ import com.kallam.middleware.request.model.BrokerRequest;
 import com.mongodb.DBObject;
 
 public interface BrokerService {
-	List<Brokers> getBrokers(String search, String compCode);
+	List<DBObject> getBrokers(String search, String compCode);
 	
 	List<Brokers> brokereBetweenDob(Date from, Date to);
 	

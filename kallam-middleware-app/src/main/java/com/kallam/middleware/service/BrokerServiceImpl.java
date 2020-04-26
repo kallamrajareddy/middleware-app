@@ -62,8 +62,8 @@ public class BrokerServiceImpl implements BrokerService{
 	
 
 	@Override
-	public List<Brokers> getBrokers(String search, String compCode) {
-		Sort sort = Sort.by("booking.closed").ascending();
+	public List<DBObject> getBrokers(String search, String compCode) {
+		/*Sort sort = Sort.by("booking.closed").ascending();
 		Query query = new Query();
 		query.with(sort);
 		List<Brokers> brokers = mongoTemplate.find(query(where("").orOperator(where("brokerName").regex(".*"+search+".*", "i")
@@ -71,9 +71,28 @@ public class BrokerServiceImpl implements BrokerService{
 				,where("addr2").regex(".*"+search+".*", "i")
 				,where("addr3").regex(".*"+search+".*", "i")
 				,where("brokerNo").regex(".*"+search+".*", "i")
-				,where("mobileNo").regex(".*"+search+".*", "i")).andOperator(where("companyCode").is(compCode))).with(Sort.by(Sort.Direction.DESC, "bookings.dueDate")), Brokers.class);
+				,where("mobileNo").regex(".*"+search+".*", "i")).andOperator(where("companyCode").is(compCode))).with(Sort.by(Sort.Direction.DESC, "bookings.dueDate")), Brokers.class);*/
+		Aggregation agg = newAggregation(
+				match(where("")
+						.orOperator(where("brokerNo").regex(".*" + search + ".*", "i"),
+								where("brokerName").regex(".*" + search + ".*", "i"),
+								where("mobileNo").regex(".*" + search + ".*", "i"),
+								where("addr1").regex(".*" + search + ".*", "i"),
+								where("addr2").regex(".*" + search + ".*", "i"),
+								where("addr3").regex(".*" + search + ".*", "i"))
+						.andOperator(where("companyCode").is(compCode))),
+				sort(Sort.Direction.DESC, "bookings.bookingDate"),
+				//project("brokerNo", "brokerName", "defaulter", "addr2", "addr1", "addr3", "mobileNo", "town","bookings"),
+				unwind("bookings", true),
+				group("brokerNo", "brokerName", "defaulter", "addr2", "addr1", "addr3", "mobileNo", "town").push(
+						when(where("bookings.closed").is(true)).then(new Document().append("closed", true))
+						.otherwise(new Document().append("closed", false))).as("bookings"),
+				project("brokerNo", "brokerName", "defaulter", "addr2", "addr1", "addr3", "mobileNo", "town","bookings")
+				);
+		AggregationOptions options = AggregationOptions.builder().allowDiskUse(true).build();
+		AggregationResults<DBObject> results = mongoTemplate.aggregate(agg.withOptions(options), Brokers.class, DBObject.class);
 		//return brokereBetweenDob(new Date(), new Date());
-		return brokers;
+		return results.getMappedResults();
 	}
 
 	@Override

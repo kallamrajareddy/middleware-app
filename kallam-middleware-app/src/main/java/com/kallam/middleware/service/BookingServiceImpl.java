@@ -272,8 +272,12 @@ public class BookingServiceImpl implements BookingService {
 	public Brokers updateBooking(BookingRequest req) {
 		Brokers broker =mongoTemplate.findOne(query(where("brokerNo").is(req.getBrokerNo()).andOperator(where("companyCode").is(req.getCompanyCode()))), Brokers.class);
 		for(Bookings booking : broker.getBookings()) {
-			if(booking.getBookingNo().equalsIgnoreCase(req.getBookingNo())) {
+			if(booking.getBookingNo().equalsIgnoreCase(req.getBookingCode())) {
 				booking.setAmountTaken(req.getAmountTaken());
+				if(!req.getBookingCode().equalsIgnoreCase(req.getBookingNo())) {
+					booking.setBookingCode(req.getBookingNo());
+					booking.setBookingNo(req.getBookingNo());
+				}
 				
 				booking.setBookingDate(MongoDateUtil.toLocal(req.getBookingDate()));
 				

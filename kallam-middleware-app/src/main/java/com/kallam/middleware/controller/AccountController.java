@@ -22,6 +22,7 @@ import com.kallam.middleware.model.broker.Brokers;
 import com.kallam.middleware.repositry.broker.BrokerRepositry;
 import com.kallam.middleware.request.model.BrokerRequest;
 import com.kallam.middleware.service.BrokerService;
+import com.mongodb.DBObject;
 
 @RestController
 @RequestMapping("/api/secured/")
@@ -35,7 +36,7 @@ public class AccountController {
 	private BrokerRepositry brokerRepositry;
 
 	@RequestMapping(value = "/get-broker-Lst/{searchValue}/{compCode}", method=RequestMethod.GET)
-    public List<Brokers> getBrokers(@PathVariable String searchValue, @PathVariable String compCode) {
+    public List<DBObject> getBrokers(@PathVariable String searchValue, @PathVariable String compCode) {
 		MongoLocalDateTime start = MongoLocalDateTime.of(1960, 8, 5, 0, 0, 0);
 		searchValue = searchValue.replaceAll("[+]", Matcher.quoteReplacement("\\/"));;
 		return brokerService.getBrokers(searchValue, compCode);
