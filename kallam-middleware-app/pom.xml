@@ -43,6 +43,13 @@
     <artifactId>itextpdf</artifactId>
     <version>5.5.13</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/com.itextpdf/layout -->
+<dependency>
+    <groupId>com.itextpdf</groupId>
+    <artifactId>layout</artifactId>
+    <version>7.0.0</version>
+</dependency>
+
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-oauth2</artifactId>
